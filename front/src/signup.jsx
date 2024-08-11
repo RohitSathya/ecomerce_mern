@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { fastcount } from './Redux/totalslice';
 import axios from 'axios';
 import link from './link';
+
+
 export default function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ export default function Signup() {
       } else {
         localStorage.setItem('userdetail', JSON.stringify(userdetail));
         dispatch(fastcount());
-        navigate('/app');
+        navigate('/');
         const navid = document.getElementById('navbar');
         if (navid) navid.style.display = 'flex';
       }

@@ -6,11 +6,12 @@ import royologo from '../images/logo.png';
 import locationlogo from '../images/location.png';
 import search from '../images/search.png';
 import cartstore from '../images/cart.png';
-import logout from '../images/log-out.png';
+import logoutIcon from '../images/log-out.png';
 import link from './link';
-export default function Navbar({ data, func, namess }) {
+
+export default function Navbar({ count, func, username }) {
   const navigate = useNavigate();
-  const [count, setCount] = useState(data);
+  const [cartCount, setCartCount] = useState(count);
 
   const counter = useSelector((state) => state.total.count);
   const fakecounter = useSelector((state) => state.total.fakecount);
@@ -19,24 +20,48 @@ export default function Navbar({ data, func, namess }) {
   useEffect(() => {
     async function fetchCart() {
       const userdetail = localStorage.getItem('userdetail');
-      const parse = JSON.parse(userdetail);
-      const response = await axios.get(`${link}/product/getcart/${parse._id}`);
-      const { message } = response.data;
+      if (userdetail) {
+        const parse = JSON.parse(userdetail);
+        const response = await axios.get(`${link}/product/getcart/${parse._id}`);
+        const { message } = response.data;
 
-      if (message === 'f') {
-        setCount(0);
-      } else {
-        setCount(response.data.length);
+        if (message === 'f') {
+          setCartCount(0);
+        } else {
+          setCartCount(response.data.length);
+        }
       }
     }
     fetchCart();
-  }, [data, counter, fakecounter, fastcount]);
+  }, [count, counter, fakecounter, fastcount]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('userdetail');
+    navigate('/login');
+  };
+  const handleOrdersClick = () => {
+    if (username === 'Guest') {
+      alert('Please log in to view your orders.');
+      
+    } else {
+      navigate('/order');
+    }
+  };
+
+  const handleCartClick = () => {
+    if (username === 'Guest') {
+      alert('Please log in to view your cart.');
+     
+    } else {
+      navigate('/cart');
+    }
+  };
 
   return (
     <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 sm:px-6 lg:px-8 py-3 shadow-lg">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-2 sm:space-x-4">
-          <img src={royologo} alt="Logo" className="h-8 sm:h-10 cursor-pointer" onClick={() => navigate('/app')} />
+          <img src={royologo} alt="Logo" className="h-8 sm:h-10 cursor-pointer" onClick={() => navigate('/')} />
           <div className="hidden lg:flex items-center space-x-1 sm:space-x-2">
             <img src={locationlogo} alt="Location" className="h-5 sm:h-6" />
             <span className="font-semibold text-xs sm:text-sm md:text-base">India Since 2018</span>
@@ -59,26 +84,26 @@ export default function Navbar({ data, func, namess }) {
 
         <div className="flex items-center space-x-2 sm:space-x-4">
           <div className="hidden sm:block">
-            <span className="font-semibold text-xs sm:text-sm md:text-lg">Hello, {namess}</span>
+            <span className="font-semibold text-xs sm:text-sm md:text-lg">Hello, {username}</span>
           </div>
-          <div className="cursor-pointer font-semibold text-xs sm:text-sm md:text-lg" onClick={() => navigate('/order')}>
+          <div className="cursor-pointer font-semibold text-xs sm:text-sm md:text-lg" onClick={handleOrdersClick
+
+          }>
             Your Orders
           </div>
-          <div className="relative cursor-pointer" onClick={() => navigate('/cart')}>
+          <div className="relative cursor-pointer" onClick={handleCartClick}>
             <img src={cartstore} alt="Cart" className="h-6 sm:h-8 md:h-10" />
             <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] sm:text-xs md:text-sm font-bold rounded-full w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex items-center justify-center">
-              {count}
+              {cartCount}
             </span>
           </div>
-          <img
-            src={logout}
-            alt="Logout"
-            className="h-6 sm:h-8 md:h-10 cursor-pointer"
-            onClick={() => {
-              localStorage.removeItem('userdetail');
-              navigate('/login');
-            }}
-          />
+          {username === 'Guest' ? (
+            <div className="cursor-pointer" onClick={() => navigate('/login')}>
+              Login
+            </div>
+          ) : (
+            <img src={logoutIcon} alt="Logout" className="h-6 sm:h-8 md:h-10 cursor-pointer" onClick={handleLogout} />
+          )}
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@ export default function Login() {
       } else {
         localStorage.setItem('userdetail', JSON.stringify(userdetail));
         dispatch(fastcount());
-        navigate('/app');
+        navigate('/');
       }
     } catch (error) {
       alert('An error occurred. Please try again.');
@@ -71,7 +71,7 @@ export default function Login() {
         <div className="mt-6 text-center">
           <p className="text-gray-600">New here?</p>
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/signup')}
             className="mt-2 py-3 w-full border border-gray-300 text-indigo-600 font-semibold rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
           >
             Create an Account

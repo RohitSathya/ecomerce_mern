@@ -4,20 +4,28 @@ import { useDispatch } from 'react-redux';
 import { fastcount } from './Redux/totalslice';
 import features from '../images/features.png';
 import link from './link';
+
 export default function ProductInfo({ data }) {
   const dispatch = useDispatch();
   const [ati, setati] = useState(data.ati);
 
   async function addToCart() {
     const userdetail = localStorage.getItem('userdetail');
+    
+    if (!userdetail) {
+      alert('Please log in to add products to your cart.');
+      return;
+    }
+    
     const parse = JSON.parse(userdetail);
-    const response = await axios.post(link+'/product/cart', {
+    const response = await axios.post(`${link}/product/cart`, {
       name: data.name,
       category: data.category,
       price: data.price,
       image: data.image,
       uid: parse._id,
     });
+    
     const { message } = response.data;
     if (message === 'f') {
       alert('Product already added to cart');

@@ -1,15 +1,16 @@
-import React, { useEffect } from "react";
-import { fastcount } from "./Redux/totalslice";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import link from "./link";
+import React, { useEffect } from 'react';
+import { fastcount } from './Redux/totalslice';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import link from './link';
+
 function Products({ data, func, namefunc, pi }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const userdetail = localStorage.getItem("userdetail");
+    const userdetail = localStorage.getItem('userdetail');
     if (userdetail) {
       const parse = JSON.parse(userdetail);
       const names = parse.name;
@@ -19,16 +20,22 @@ function Products({ data, func, namefunc, pi }) {
 
   function imgclick() {
     pi(data);
-    navigate("/productinfo");
+    navigate('/productinfo');
   }
 
   async function cart() {
-    const userdetail = localStorage.getItem("userdetail");
+    const userdetail = localStorage.getItem('userdetail');
+    if (!userdetail) {
+      alert('Please log in to add products to your cart.');
+     
+      return;
+    }
+
     const parse = JSON.parse(userdetail);
 
     try {
       const response = await axios.post(
-        link+"/product/cart",
+        `${link}/product/cart`,
         {
           name: data.name,
           category: data.category,
@@ -39,8 +46,8 @@ function Products({ data, func, namefunc, pi }) {
       );
 
       const { message } = response.data;
-      if (message === "f") {
-        alert("Product already added to cart");
+      if (message === 'f') {
+        alert('Product already added to cart');
       } else {
         const count = await axios.get(
           `${link}/product/getcart/${parse._id}`

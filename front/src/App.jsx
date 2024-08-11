@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, useLocation, BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './navbar';
 import Products from './Products';
 import Cart from './Cart';
@@ -13,14 +13,25 @@ import four from '../images/4.0.png';
 import fourpoint5 from '../images/4.5.png';
 import five from '../images/5.0.png';
 
+
 function AppContent() {
   const [buyprice, setBuyprice] = useState();
   const [count, setCount] = useState();
-  const [username, setUsername] = useState();
+  const [username, setUsername] = useState('Guest');
   const [buydata, setBuydata] = useState([]);
   const [productinfo, setProductinfo] = useState({});
 
   const location = useLocation();
+
+  useEffect(() => {
+    const userdetail = localStorage.getItem('userdetail');
+    if (userdetail) {
+      const parse = JSON.parse(userdetail);
+      setUsername(parse.name);
+    } else {
+      setUsername('Guest');
+    }
+  }, []);
 
   const products = [
     {
@@ -317,7 +328,7 @@ function AppContent() {
         'Ideal for various physical activities and casual wear.'
       ]
     },
-  ];
+  ]
 
   const [row1, setRow1] = useState(products.slice(0, 6));
   const [row2, setRow2] = useState(products.slice(6, 12));
@@ -341,15 +352,15 @@ function AppContent() {
     }
   }
 
-  const hideNavbar = location.pathname === '/' || location.pathname === '/login';
+  const hideNavbar = location.pathname === '/login' || location.pathname === '/signup';
 
   return (
     <div>
-      {!hideNavbar && <Navbar data={count} func={getname} namess={username} />}
+      {!hideNavbar && <Navbar data={count} func={getname} username={username} />}
       <div className="container mx-auto px-4 py-8">
         <Routes>
           <Route
-            path="/app"
+            path="/"
             element={
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-8">
@@ -366,7 +377,7 @@ function AppContent() {
             }
           />
           <Route path="/cart" element={<Cart func={setBuyprice} funce={setBuydata} />} />
-          <Route path="/" element={<Signup />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/buy" element={<BuyPage data={buyprice} func={setCount} data2={buydata} />} />
           <Route path="/order" element={<Myoder />} />
