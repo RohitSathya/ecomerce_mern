@@ -1,0 +1,63 @@
+.pim{
+    margin-top: 50px;
+    margin-left: 150px;
+}
+.pcon{
+    margin-top: -640px;
+    margin-left: 700px;
+}
+.rat{
+    margin-top: -15px;
+    margin-left: 20px;
+    display: flex;
+}
+.bline{
+    background-color: grey;
+    height: 2px;
+    width: 1000px;
+}
+.pdis{
+    margin-top: 30px;
+    margin-left: 60px;
+    display: flex;
+}
+.prate{
+    margin-left: 140px;
+    margin-top: -45px;
+    display: flex;
+    
+}
+.pmrp{
+    margin-left: 60px;
+}
+.pmrpline{
+    background-color: black;
+    height: 1px;
+    width: 50px;
+    margin-left: 90px;
+    margin-top: -22px;
+}
+.feat{
+    margin-left: 50px;
+    margin-top: 50px;
+}
+.ati{
+    margin-left: 70px;
+    margin-top: 30px;
+}
+.ati2{
+    margin-left: 70px;
+    margin-top: 20px;
+}
+.pb1e{
+    width: 100px;
+    border-radius: 16px;
+    background-color: rgb(102, 4, 116);
+    color: white;
+    border-color: rgb(205, 50, 140);
+    height: 40px;
+    margin-left: 80px;
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 700;
+}
