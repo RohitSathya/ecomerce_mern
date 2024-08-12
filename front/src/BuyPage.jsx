@@ -94,13 +94,9 @@ export default function BuyPage({ data, data2, func }) {
        dispatch(fastcount());
     dispatch(postorder(ord));
     await axios.post(`${link}/product/order`, { ord });
+    nav('/');
 
-  // Show success message
-  setOrderSuccess(true); 
-         nav('/');
-        setOrderSuccess(false);
 
-  // Wait for 5 seconds
 
 };
 
