@@ -28,7 +28,7 @@ export default function CartDisplay({ data, func, ke, deletes }) {
       <img src={data.image} alt={data.name} className="w-full md:w-1/3 h-auto object-contain rounded-lg mb-4 md:mb-0" />
       <div className="flex flex-col justify-between ml-0 md:ml-4 w-full md:w-2/3">
         <div className="text-center md:text-left">
-          <b className="block text-lg font-semibold">{data.name}</b>
+          <b className="block text-lg font-semibold text-gray-700" >{data.name}</b>
           <b className="block text-gray-500 mt-2">{data.price}</b>
           <b className="block text-gray-500 mt-2">Category: {data.category}</b>
         </div>
@@ -36,7 +36,7 @@ export default function CartDisplay({ data, func, ke, deletes }) {
           <select
             value={selectedOption}
             onChange={handleChange}
-            className="py-1 px-2 border border-gray-300 rounded-lg mb-2"
+            className="py-1 px-2 border border-gray-300 rounded-lg mb-2 text-gray-700 "
           >
             {[...Array(10).keys()].map((i) => (
               <option key={i + 1} value={i + 1}>
