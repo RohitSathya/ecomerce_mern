@@ -74,9 +74,8 @@ function Products({ data, func, namefunc, pi }) {
   return (
     <div
       className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden transform hover:-translate-y-1 hover:scale-105 h-[25rem] flex flex-col justify-between relative"
-      onClick={imgclick}
     >
-      <div className="relative cursor-pointer">
+      <div className="relative cursor-pointer" onClick={imgclick}>
         <img
           src={data.image}
           alt={data.name}
@@ -84,13 +83,17 @@ function Products({ data, func, namefunc, pi }) {
         />
         <div
           className={`absolute inset-0 flex items-center justify-center bg-black ${
-            isMobile ? 'bg-opacity-50' : 'bg-opacity-0 hover:bg-opacity-50'
-          } transition-all duration-300 ease-in-out`}
+            isMobile ? 'bg-opacity-50 opacity-100' : 'bg-opacity-0'
+          } transition-all duration-300 ease-in-out ${
+            !isMobile ? 'hover:bg-opacity-50 hover:opacity-100' : ''
+          }`}
         >
           <span
             className={`text-white text-lg font-semibold ${
-              isMobile ? 'opacity-100' : 'opacity-0 hover:opacity-100'
-            } transition-opacity duration-300`}
+              isMobile ? 'opacity-100' : 'opacity-0'
+            } transition-opacity duration-300 ${
+              !isMobile ? 'hover:opacity-100' : ''
+            }`}
           >
             View Product
           </span>
