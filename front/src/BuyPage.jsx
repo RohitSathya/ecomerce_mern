@@ -93,8 +93,12 @@ export default function BuyPage({ data, data2, func }) {
   await axios.delete(`${link}/product/dcart/${parse._id}`);
        dispatch(fastcount());
     dispatch(postorder(ord));
-    await axios.post(`${link}/product/order`, { ord });
-    nav('/');
+    const mm=await axios.post(`${link}/product/order`, { ord });
+      const {m}=mm.data
+      if(m=='s'){
+         nav('/');
+      }
+   
 
 
 
