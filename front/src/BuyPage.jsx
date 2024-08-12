@@ -91,13 +91,14 @@ export default function BuyPage({ data, data2, func }) {
 
       const processOrder = async () => {
         await axios.delete(`${link}/product/dcart/${parse._id}`);
+         nav('/');
         dispatch(fastcount());
         dispatch(postorder(ord));
         await axios.post(`${link}/product/order`, { ord });
 
         setOrderSuccess(true); // Show success message
         setTimeout(() => {
-          nav('/');
+         
           setOrderSuccess(false); // Hide success message after navigation
         }, 5000);
       };
