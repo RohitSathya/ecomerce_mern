@@ -89,33 +89,29 @@ export default function BuyPage({ data, data2, func }) {
       const userdetail = localStorage.getItem('userdetail');
       const parse = JSON.parse(userdetail);
 
-    const processOrder = async () => {
-  await axios.delete(`${link}/product/dcart/${parse._id}`);
-       dispatch(fastcount());
-    dispatch(postorder(ord));
-    const mm=await axios.post(`${link}/product/order`, { ord });
-      const {m}=mm.data
-      if(m=='s'){
-         setTimeout(async () => {
-          // Proceed with the rest of the order process
-          dispatch(fastcount());
-          dispatch(postorder(ord));
-          await axios.post(`${link}/product/order`, { ord });
+      const processOrder = async () => {
+        await axios.delete(`${link}/product/dcart/${parse._id}`);
+        dispatch(fastcount());
+        dispatch(postorder(ord));
+        const mm = await axios.post(`${link}/product/order`, { ord });
+        const { m } = mm.data;
 
-          // Navigate to the home page
-          nav('/');
+        if (m === 's') {
+          setOrderSuccess(true);
+          setTimeout(async () => {
+            // Proceed with the rest of the order process
+            dispatch(fastcount());
+            dispatch(postorder(ord));
+            await axios.post(`${link}/product/order`, { ord });
 
-          // Hide success message
-          setOrderSuccess(false); 
-        }, 5000);
+            // Navigate to the home page
+            nav('/');
+
+            // Hide success message
+            setOrderSuccess(false);
+          }, 5000);
+        }
       };
-      }
-   
-
-
-
-};
-
 
       processOrder();
     } else {
