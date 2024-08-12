@@ -9,7 +9,6 @@ function Products({ data, func, namefunc, pi }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isMobile, setIsMobile] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,12 +31,8 @@ function Products({ data, func, namefunc, pi }) {
   }, [namefunc]);
 
   function imgclick() {
-    if (isMobile && !showOverlay) {
-      setShowOverlay(true);
-    } else {
-      pi(data);
-      navigate('/productinfo');
-    }
+    pi(data);
+    navigate('/productinfo');
   }
 
   async function cart() {
@@ -77,15 +72,26 @@ function Products({ data, func, namefunc, pi }) {
   }
 
   return (
-    <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden transform hover:-translate-y-1 hover:scale-105 h-[25rem] flex flex-col justify-between">
-      <div className="relative cursor-pointer" onClick={imgclick}>
+    <div
+      className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden transform hover:-translate-y-1 hover:scale-105 h-[25rem] flex flex-col justify-between relative"
+      onClick={imgclick}
+    >
+      <div className="relative cursor-pointer">
         <img
           src={data.image}
           alt={data.name}
-          className="w-full h-48 object-cover transition-transform duration-300 ease-in-out hover:scale-110"
+          className="w-full h-48 object-cover transition-transform duration-300 ease-in-out"
         />
-        <div className={`absolute inset-0 flex items-center justify-center bg-black transition-all duration-300 ease-in-out ${isMobile ? (showOverlay ? 'bg-opacity-50' : 'bg-opacity-0') : 'bg-opacity-0 hover:bg-opacity-50'}`}>
-          <span className={`text-white text-lg font-semibold transition-opacity duration-300 ${isMobile ? (showOverlay ? 'opacity-100' : 'opacity-0') : 'opacity-0 hover:opacity-100'}`}>
+        <div
+          className={`absolute inset-0 flex items-center justify-center bg-black ${
+            isMobile ? 'bg-opacity-50' : 'bg-opacity-0 hover:bg-opacity-50'
+          } transition-all duration-300 ease-in-out`}
+        >
+          <span
+            className={`text-white text-lg font-semibold ${
+              isMobile ? 'opacity-100' : 'opacity-0 hover:opacity-100'
+            } transition-opacity duration-300`}
+          >
             View Product
           </span>
         </div>
@@ -99,7 +105,10 @@ function Products({ data, func, namefunc, pi }) {
         <div className="flex justify-center">
           <button
             className="bg-yellow-500 text-gray-800 font-semibold px-4 py-2 rounded-md hover:bg-yellow-600 hover:text-white transition-colors duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-yellow-300"
-            onClick={cart}
+            onClick={(e) => {
+              e.stopPropagation();
+              cart();
+            }}
           >
             Add to Cart
           </button>
