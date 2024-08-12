@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fastcount } from './Redux/totalslice';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -8,6 +8,19 @@ import link from './link';
 function Products({ data, func, namefunc, pi }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isMobile, setIsMobile] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const userdetail = localStorage.getItem('userdetail');
@@ -19,8 +32,12 @@ function Products({ data, func, namefunc, pi }) {
   }, [namefunc]);
 
   function imgclick() {
-    pi(data);
-    navigate('/productinfo');
+    if (isMobile && !showOverlay) {
+      setShowOverlay(true);
+    } else {
+      pi(data);
+      navigate('/productinfo');
+    }
   }
 
   async function cart() {
@@ -67,8 +84,8 @@ function Products({ data, func, namefunc, pi }) {
           alt={data.name}
           className="w-full h-48 object-cover transition-transform duration-300 ease-in-out hover:scale-110"
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 hover:bg-opacity-50 transition-all duration-300 ease-in-out">
-          <span className="text-white text-lg font-semibold opacity-0 hover:opacity-100 transition-opacity duration-300">
+        <div className={`absolute inset-0 flex items-center justify-center bg-black transition-all duration-300 ease-in-out ${isMobile ? (showOverlay ? 'bg-opacity-50' : 'bg-opacity-0') : 'bg-opacity-0 hover:bg-opacity-50'}`}>
+          <span className={`text-white text-lg font-semibold transition-opacity duration-300 ${isMobile ? (showOverlay ? 'opacity-100' : 'opacity-0') : 'opacity-0 hover:opacity-100'}`}>
             View Product
           </span>
         </div>
