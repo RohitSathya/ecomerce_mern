@@ -90,24 +90,25 @@ export default function BuyPage({ data, data2, func }) {
       const parse = JSON.parse(userdetail);
 
       const processOrder = async () => {
-        await axios.delete(`${link}/product/dcart/${parse._id}`);
-         nav('/');
-        dispatch(fastcount());
-        dispatch(postorder(ord));
-        await axios.post(`${link}/product/order`, { ord });
+  await axios.delete(`${link}/product/dcart/${parse._id}`);
 
-        setOrderSuccess(true); // Show success message
-        setTimeout(() => {
-         
-          setOrderSuccess(false); // Hide success message after navigation
-        }, 5000);
-      };
+  // Show success message
+  setOrderSuccess(true); 
 
-      processOrder();
-    } else {
-      alert('Invalid card details!');
-    }
-  };
+  // Wait for 5 seconds
+  setTimeout(async () => {
+    // Proceed with the rest of the order process
+    dispatch(fastcount());
+    dispatch(postorder(ord));
+    await axios.post(`${link}/product/order`, { ord });
+
+    // Navigate to the home page
+    nav('/');
+
+    // Hide success message
+    setOrderSuccess(false); 
+  }, 5000);
+};
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
