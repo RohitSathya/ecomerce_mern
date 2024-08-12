@@ -44,7 +44,7 @@ export default function Login() {
             <input
               type="email"
               id="email"
-              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
+              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -57,7 +57,7 @@ export default function Login() {
             <input
               type="password"
               id="password"
-              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
+              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-md text-gray-700  focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
