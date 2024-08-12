@@ -44,8 +44,13 @@ export default function Signup() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Create Your Account</h1>
+        <div className="text-center mb-4">
+          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+            ROYOMART
+          </h1>
+        </div>
+        <div className="text-center mb-6">
+          <h2 className="text-3xl font-bold text-gray-800">Create Your Account</h2>
           <p className="text-gray-600">Join us and start your journey</p>
         </div>
         <div className="space-y-6">
@@ -125,7 +130,7 @@ export default function Signup() {
         <div className="mt-4 text-center">
           <button
             onClick={() => navigate('/')}
-            className="py-2 w-full bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-150 ease-in-out"
+            className="py-2 w-full bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
           >
             Back to Home Page
           </button>
