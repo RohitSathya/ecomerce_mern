@@ -94,11 +94,11 @@ export default function Navbar({ count, func, username }) {
             </span>
           </div>
           {username === 'Guest' ? (
-            <div className="cursor-pointer ml-4" onClick={() => navigate('/login')}>
+            <div className="cursor-pointer ml-10" onClick={() => navigate('/login')}>
               Login
             </div>
           ) : (
-            <img src={logoutIcon} alt="Logout" className="h-6 sm:h-8 md:h-10 cursor-pointer ml-4" onClick={handleLogout} />
+            <img src={logoutIcon} alt="Logout" className="h-6 sm:h-8 md:h-10 cursor-pointer ml-10" onClick={handleLogout} />
           )}
         </div>
       </div>
