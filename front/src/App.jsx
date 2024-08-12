@@ -22,6 +22,15 @@ function AppContent() {
 
   const location = useLocation();
 
+   useEffect(() => {
+    // Load the AdSense script
+    const script = document.createElement('script');
+    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3637280211559707';
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    document.body.appendChild(script);
+  }, []);
+
   useEffect(() => {
     const userdetail = localStorage.getItem('userdetail');
     if (userdetail) {
