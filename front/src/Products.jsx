@@ -73,10 +73,9 @@ function Products({ data, func, namefunc, pi }) {
 
   return (
     <div
-      className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden transform hover:-translate-y-1 hover:scale-105 h-[25rem] flex flex-col justify-between relative cursor-pointer"
-      onClick={imgclick}
+      className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden transform hover:-translate-y-1 hover:scale-105 h-[25rem] flex flex-col justify-between relative"
     >
-      <div className="relative flex-grow">
+      <div className="relative cursor-pointer" onClick={imgclick}>
         <img
           src={data.image}
           alt={data.name}
@@ -100,7 +99,7 @@ function Products({ data, func, namefunc, pi }) {
           </span>
         </div>
       </div>
-      <div className="p-4 flex flex-col justify-between">
+      <div className="p-4 flex flex-col justify-between flex-grow">
         <div className="text-center">
           <h3 className="text-lg font-bold text-white mb-2">{data.name}</h3>
           <p className="text-yellow-200 font-semibold text-xl mb-2">{data.price}</p>
@@ -110,7 +109,7 @@ function Products({ data, func, namefunc, pi }) {
           <button
             className="bg-yellow-500 text-gray-800 font-semibold px-4 py-2 rounded-md hover:bg-yellow-600 hover:text-white transition-colors duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-yellow-300"
             onClick={(e) => {
-              e.stopPropagation(); // Prevents navigating to product info
+              e.stopPropagation();
               cart();
             }}
           >
