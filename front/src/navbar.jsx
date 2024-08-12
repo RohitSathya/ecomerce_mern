@@ -42,7 +42,6 @@ export default function Navbar({ count, func, username }) {
   const handleOrdersClick = () => {
     if (username === 'Guest') {
       alert('Please log in to view your orders.');
-      
     } else {
       navigate('/order');
     }
@@ -51,7 +50,6 @@ export default function Navbar({ count, func, username }) {
   const handleCartClick = () => {
     if (username === 'Guest') {
       alert('Please log in to view your cart.');
-     
     } else {
       navigate('/cart');
     }
@@ -86,9 +84,7 @@ export default function Navbar({ count, func, username }) {
           <div className="hidden sm:block">
             <span className="font-semibold text-xs sm:text-sm md:text-lg">Hello, {username}</span>
           </div>
-          <div className="cursor-pointer font-semibold text-xs sm:text-sm md:text-lg" onClick={handleOrdersClick
-
-          }>
+          <div className="cursor-pointer font-semibold text-xs sm:text-sm md:text-lg" onClick={handleOrdersClick}>
             Your Orders
           </div>
           <div className="relative cursor-pointer" onClick={handleCartClick}>
@@ -98,11 +94,11 @@ export default function Navbar({ count, func, username }) {
             </span>
           </div>
           {username === 'Guest' ? (
-            <div className="cursor-pointer" onClick={() => navigate('/login')}>
+            <div className="cursor-pointer ml-4" onClick={() => navigate('/login')}>
               Login
             </div>
           ) : (
-            <img src={logoutIcon} alt="Logout" className="h-6 sm:h-8 md:h-10 cursor-pointer" onClick={handleLogout} />
+            <img src={logoutIcon} alt="Logout" className="h-6 sm:h-8 md:h-10 cursor-pointer ml-4" onClick={handleLogout} />
           )}
         </div>
       </div>
