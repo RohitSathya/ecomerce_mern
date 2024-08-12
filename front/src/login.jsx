@@ -4,16 +4,16 @@ import { useDispatch } from 'react-redux';
 import { fastcount } from './Redux/totalslice';
 import axios from 'axios';
 import link from './link';
+
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
 
   async function handleSubmit() {
     try {
-      const response = await axios.post(link+'/product/login', { email, password });
+      const response = await axios.post(link + '/product/login', { email, password });
       const { message, userdetail } = response.data;
       if (message === 'failed') {
         alert('Incorrect email or password');
@@ -75,6 +75,14 @@ export default function Login() {
             className="mt-2 py-3 w-full border border-gray-300 text-indigo-600 font-semibold rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
           >
             Create an Account
+          </button>
+        </div>
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => navigate('/')}
+            className="py-3 w-full bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-150 ease-in-out"
+          >
+            Back to Home Page
           </button>
         </div>
       </div>
