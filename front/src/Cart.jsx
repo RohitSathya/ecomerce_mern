@@ -95,8 +95,8 @@ export default function Cart({ func, funce }) {
           <b className="text-green-700 text-sm">Your order is eligible for FREE Delivery.</b>
         </div>
         <div className="flex justify-between items-center mb-4">
-          <b className="text-lg font-medium">Subtotal ({count} items): $</b>
-          <b className="text-xl font-bold">{fl === 0 ? total : reduxtotal}</b>
+          <b className="text-lg font-medium text-gray-700">Subtotal ({count} items): $</b>
+          <b className="text-xl font-bold text-gray-900 ">{fl === 0 ? total : reduxtotal}</b>
         </div>
         <button
           className="w-full py-2 bg-yellow-400 text-black font-semibold rounded-lg hover:bg-yellow-500"
