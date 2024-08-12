@@ -108,7 +108,7 @@ export default function BuyPage({ data, data2, func }) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h2 className="text-red-600 text-lg mb-4">Order Total: {parsetot}</h2>
+      <h2 className="text-red-900 text-lg mb-4">Order Total: {parsetot}</h2>
 
       {showAddressForm ? (
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl mb-6 relative">
@@ -120,40 +120,40 @@ export default function BuyPage({ data, data2, func }) {
           />
           <h1 className="text-xl font-semibold mb-4">Add/Edit Address</h1>
           <div className="relative">
-            <label className="block text-sm font-medium mb-2">Country/Region</label>
+            <label className="block text-sm font-medium mb-2 text-gray-700 ">Country/Region</label>
             <select
               value={country}
               onChange={(e) => setCountry(e.target.value)}
-              className="w-full p-2 mb-4 border rounded-md"
+              className="w-full p-2 mb-4 border rounded-md text-gray-700"
             >
               <option value="India">India</option>
               <option value="United Kingdom">United Kingdom</option>
               <option value="United States">United States</option>
             </select>
-            <label className="block text-sm font-medium mb-2">Full Name (First and Last Name)</label>
+            <label className="block text-sm font-medium mb-2 text-gray-700 ">Full Name (First and Last Name)</label>
             <input
               type="text"
-              className="w-full p-2 mb-4 border rounded-md"
+              className="w-full p-2 mb-4 border rounded-md text-gray-700 "
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <label className="block text-sm font-medium mb-2">Mobile Number</label>
+            <label className="block text-sm font-medium mb-2 text-gray-700 ">Mobile Number</label>
             <input
               type="text"
               maxLength="10"
-              className="w-full p-2 mb-4 border rounded-md"
+              className="w-full p-2 mb-4 border rounded-md text-gray-700 "
               value={pno}
               onChange={(e) => setPno(e.target.value)}
             />
-            <label className="block text-sm font-medium mb-2">Pincode</label>
+            <label className="block text-sm font-medium mb-2 text-gray-700 ">Pincode</label>
             <input
               type="text"
               maxLength="6"
-              className="w-full p-2 mb-4 border rounded-md"
+              className="w-full p-2 mb-4 border rounded-md text-gray-700 "
               value={pincode}
               onChange={(e) => setPincode(e.target.value)}
             />
-            <label className="block text-sm font-medium mb-2">Area</label>
+            <label className="block text-sm font-medium mb-2 text-gray-700 ">Area</label>
             <input
               type="text"
               className="w-full p-2 mb-4 border rounded-md"
@@ -164,7 +164,7 @@ export default function BuyPage({ data, data2, func }) {
             <input
               type="text"
               maxLength="26"
-              className="w-full p-2 mb-4 border rounded-md"
+              className="w-full p-2 mb-4 border rounded-md text-gray-700 "
               value={landmark}
               onChange={(e) => setLandmark(e.target.value)}
             />
@@ -178,11 +178,11 @@ export default function BuyPage({ data, data2, func }) {
         </div>
       ) : (
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl mb-6">
-          <h2 className="text-xl font-semibold mb-4">Shipping Address</h2>
+          <h2 className="text-xl font-semibold mb-4 text-gray-900">Shipping Address</h2>
           <div>
-            <p><strong>{savedAdd?.name}</strong></p>
-            <p>{savedAdd?.area}, {savedAdd?.landmark}</p>
-            <p>{savedAdd?.pincode}</p>
+            <p className="text-gray-900"><strong>{savedAdd?.name}</strong></p>
+            <p className="text-gray-900">{savedAdd?.area}, {savedAdd?.landmark}</p>
+            <p className="text-gray-900">{savedAdd?.pincode}</p>
           </div>
           <button
             className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 mt-4 rounded-md"
@@ -195,31 +195,31 @@ export default function BuyPage({ data, data2, func }) {
 
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl payment" id="payment">
         <h2 className="text-xl font-semibold mb-4 text-blue-600">Payment Details</h2>
-        <label className="block text-sm font-medium mb-2">Card Number</label>
+        <label className="block text-sm font-medium mb-2 text-grey-700 ">Card Number</label>
         <input
           type="text"
           maxLength="16"
-          className="w-full p-2 mb-4 border rounded-md"
+          className="w-full p-2 mb-4 border rounded-md text-grey-800"
           value={cardNumber}
           onChange={(e) => setCardNumber(e.target.value)}
         />
         <div className="flex space-x-4 mb-4">
           <div>
-            <label className="block text-sm font-medium mb-2">Exp Month</label>
+            <label className="block text-sm font-medium mb-2 text-grey-700">Exp Month</label>
             <input
               type="text"
               maxLength="2"
-              className="w-full p-2 border rounded-md"
+              className="w-full p-2 border rounded-md text-grey-800"
               value={cardExpDate}
               onChange={(e) => setCardExpDate(e.target.value)}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-2">Exp Year</label>
+            <label className="block text-sm font-medium mb-2 text-grey-700">Exp Year</label>
             <input
               type="text"
               maxLength="2"
-              className="w-full p-2 border rounded-md"
+              className="w-full p-2 border rounded-md text-grey-800"
               value={cardExpYear}
               onChange={(e) => setCardExpYear(e.target.value)}
             />
