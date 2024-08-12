@@ -59,10 +59,10 @@ export default function Navbar({ count, func, username }) {
     <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-3 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-4 sm:space-x-6">
-          <img src={royologo} alt="Logo" className="h-10 sm:h-8 cursor-pointer hidden sm:block" onClick={() => navigate('/')} />
+          <img src={royologo} alt="Logo" className="h-8 sm:h-12 cursor-pointer hidden sm:block" onClick={() => navigate('/')} />
           <div className="hidden lg:flex items-center space-x-2 sm:space-x-3">
-            <img src={locationlogo} alt="Location" className="h-4 sm:h-5" />
-            <span className="font-semibold text-xs sm:text-sm md:text-base">India Since 2018</span>
+            <img src={locationlogo} alt="Location" className="h-5 sm:h-6" />
+            <span className="font-semibold text-sm sm:text-base md:text-lg">India Since 2018</span>
           </div>
         </div>
 
