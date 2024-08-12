@@ -56,22 +56,22 @@ export default function Navbar({ count, func, username }) {
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-2 sm:px-4 lg:px-6 py-2 sm:py-3 shadow-lg">
+    <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-3 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div className="flex items-center space-x-2 sm:space-x-4">
-          <img src={royologo} alt="Logo" className="h-6 sm:h-8 cursor-pointer" onClick={() => navigate('/')} />
-          <div className="hidden lg:flex items-center space-x-1 sm:space-x-2">
+        <div className="flex items-center space-x-4 sm:space-x-6">
+          <img src={royologo} alt="Logo" className="h-6 sm:h-8 cursor-pointer hidden sm:block" onClick={() => navigate('/')} />
+          <div className="hidden lg:flex items-center space-x-2 sm:space-x-3">
             <img src={locationlogo} alt="Location" className="h-4 sm:h-5" />
             <span className="font-semibold text-xs sm:text-sm md:text-base">India Since 2018</span>
           </div>
         </div>
 
         <div className="flex-1 flex justify-center">
-          <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl">
+          <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg">
             <input
               type="text"
               placeholder="Search Royofist.in"
-              className="w-full px-4 py-1 sm:py-2 rounded-md border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full px-4 py-2 rounded-md border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-400"
               onChange={(e) => func(e.target.value)}
             />
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:pr-3">
@@ -80,7 +80,7 @@ export default function Navbar({ count, func, username }) {
           </div>
         </div>
 
-        <div className="flex items-center space-x-4 sm:space-x-6">
+        <div className="flex items-center space-x-6 sm:space-x-8">
           <div className="hidden sm:block">
             <span className="font-semibold text-xs sm:text-sm md:text-lg">Hello, {username}</span>
           </div>
