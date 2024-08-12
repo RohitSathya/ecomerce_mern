@@ -156,11 +156,11 @@ export default function BuyPage({ data, data2, func }) {
             <label className="block text-sm font-medium mb-2 text-gray-700 ">Area</label>
             <input
               type="text"
-              className="w-full p-2 mb-4 border rounded-md text-grey-700"
+              className="w-full p-2 mb-4 border rounded-md text-gray-700"
               value={area}
               onChange={(e) => setArea(e.target.value)}
             />
-            <label className="block text-sm font-medium mb-2 text-grey-800">Landmark</label>
+            <label className="block text-sm font-medium mb-2 text-gray-700">Landmark</label>
             <input
               type="text"
               maxLength="26"
@@ -195,31 +195,31 @@ export default function BuyPage({ data, data2, func }) {
 
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl payment" id="payment">
         <h2 className="text-xl font-semibold mb-4 text-blue-600">Payment Details</h2>
-        <label className="block text-sm font-medium mb-2 text-grey-700 ">Card Number</label>
+        <label className="block text-sm font-medium mb-2 text-gray-700 ">Card Number</label>
         <input
           type="text"
           maxLength="16"
-          className="w-full p-2 mb-4 border rounded-md text-grey-700"
+          className="w-full p-2 mb-4 border rounded-md text-gray-700"
           value={cardNumber}
           onChange={(e) => setCardNumber(e.target.value)}
         />
         <div className="flex space-x-4 mb-4">
           <div>
-            <label className="block text-sm font-medium mb-2 text-grey-700">Exp Month</label>
+            <label className="block text-sm font-medium mb-2 text-gray-700">Exp Month</label>
             <input
               type="text"
               maxLength="2"
-              className="w-full p-2 border rounded-md text-grey-700"
+              className="w-full p-2 border rounded-md text-gray-700"
               value={cardExpDate}
               onChange={(e) => setCardExpDate(e.target.value)}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-2 text-grey-700">Exp Year</label>
+            <label className="block text-sm font-medium mb-2 text-gray-700">Exp Year</label>
             <input
               type="text"
               maxLength="2"
-              className="w-full p-2 border rounded-md text-grey-700"
+              className="w-full p-2 border rounded-md text-gray-700"
               value={cardExpYear}
               onChange={(e) => setCardExpYear(e.target.value)}
             />
