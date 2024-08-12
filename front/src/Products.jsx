@@ -61,7 +61,7 @@ function Products({ data, func, namefunc, pi }) {
   }
 
   return (
-    <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden transform hover:-translate-y-1 hover:scale-105 h-[22rem] flex flex-col justify-between">
+    <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden transform hover:-translate-y-1 hover:scale-105 h-[25rem] flex flex-col justify-between">
       <div className="cursor-pointer" onClick={imgclick}>
         <img
           src={data.image}
