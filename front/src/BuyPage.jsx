@@ -156,11 +156,11 @@ export default function BuyPage({ data, data2, func }) {
             <label className="block text-sm font-medium mb-2 text-gray-700 ">Area</label>
             <input
               type="text"
-              className="w-full p-2 mb-4 border rounded-md"
+              className="w-full p-2 mb-4 border rounded-md text-grey-700"
               value={area}
               onChange={(e) => setArea(e.target.value)}
             />
-            <label className="block text-sm font-medium mb-2">Landmark</label>
+            <label className="block text-sm font-medium mb-2 text-grey-800">Landmark</label>
             <input
               type="text"
               maxLength="26"
@@ -199,7 +199,7 @@ export default function BuyPage({ data, data2, func }) {
         <input
           type="text"
           maxLength="16"
-          className="w-full p-2 mb-4 border rounded-md text-grey-800"
+          className="w-full p-2 mb-4 border rounded-md text-grey-700"
           value={cardNumber}
           onChange={(e) => setCardNumber(e.target.value)}
         />
@@ -209,7 +209,7 @@ export default function BuyPage({ data, data2, func }) {
             <input
               type="text"
               maxLength="2"
-              className="w-full p-2 border rounded-md text-grey-800"
+              className="w-full p-2 border rounded-md text-grey-700"
               value={cardExpDate}
               onChange={(e) => setCardExpDate(e.target.value)}
             />
@@ -219,7 +219,7 @@ export default function BuyPage({ data, data2, func }) {
             <input
               type="text"
               maxLength="2"
-              className="w-full p-2 border rounded-md text-grey-800"
+              className="w-full p-2 border rounded-md text-grey-700"
               value={cardExpYear}
               onChange={(e) => setCardExpYear(e.target.value)}
             />
