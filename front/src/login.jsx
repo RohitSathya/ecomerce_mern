@@ -28,11 +28,13 @@ export default function Login() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 via-purple-800 to-pink-700 p-4">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8 transform transition-all hover:scale-105 hover:shadow-xl">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 p-4">
+      <div className="w-full max-w-md bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-8 transform transition-all hover:scale-105 hover:shadow-xl">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold text-gray-900">Welcome Back</h1>
-          <p className="text-gray-500 mt-2">Sign in to continue to your account</p>
+          <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+            ROYOMART
+          </h1>
+          <p className="text-gray-700 mt-2 text-lg">Sign in to continue to your account</p>
         </div>
         <div className="space-y-6">
           <div>
@@ -63,13 +65,13 @@ export default function Login() {
           </div>
           <button
             onClick={handleSubmit}
-            className="w-full py-3 bg-indigo-600 text-white font-bold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out transform hover:scale-105"
+            className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold rounded-md shadow-md hover:bg-gradient-to-l focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out transform hover:scale-105"
           >
             Sign In
           </button>
         </div>
         <div className="mt-6 text-center">
-          <p className="text-gray-600">New here?</p>
+          <p className="text-gray-700 text-lg">New here?</p>
           <button
             onClick={() => navigate('/signup')}
             className="mt-2 py-3 w-full border border-gray-300 text-indigo-600 font-semibold rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
@@ -80,7 +82,7 @@ export default function Login() {
         <div className="mt-4 text-center">
           <button
             onClick={() => navigate('/')}
-            className="py-3 w-full bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-150 ease-in-out"
+            className="py-3 w-full bg-gradient-to-r from-gray-600 to-gray-700 text-white font-semibold rounded-md hover:bg-gradient-to-l focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-150 ease-in-out"
           >
             Back to Home Page
           </button>
