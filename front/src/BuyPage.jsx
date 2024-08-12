@@ -6,7 +6,8 @@ import { fastcount, postorder } from './Redux/totalslice';
 import close from '../images/close.png';
 import tick from '../images/tick.png';
 import card from '../images/cards.png';
-import link from './link'
+import link from './link';
+
 export default function BuyPage({ data, data2, func }) {
   const [ord, setOrd] = useState(data2);
   const [country, setCountry] = useState('India');
@@ -23,6 +24,7 @@ export default function BuyPage({ data, data2, func }) {
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpDate, setCardExpDate] = useState('');
   const [cardExpYear, setCardExpYear] = useState('');
+  const [orderSuccess, setOrderSuccess] = useState(false); // State to manage success message visibility
 
   const nav = useNavigate();
   const dispatch = useDispatch();
@@ -33,7 +35,7 @@ export default function BuyPage({ data, data2, func }) {
       const parse = JSON.parse(userdetail);
       const response = await axios.get(`${link}/product/getaddress/${parse._id}`);
       const { message, addressofuid } = response.data;
-      
+
       if (message === 's' && addressofuid) {
         setSavedAdd(addressofuid);
         setIsNewUser(false);
@@ -56,7 +58,7 @@ export default function BuyPage({ data, data2, func }) {
     const parse = JSON.parse(userdetail);
 
     if (isNewUser) {
-      await axios.post(link+'/product/address', {
+      await axios.post(link + '/product/address', {
         country,
         name,
         phoneno: pno,
@@ -82,8 +84,8 @@ export default function BuyPage({ data, data2, func }) {
 
   const handlePayment = () => {
     if (/^[0-9]{16}$/.test(cardNumber) && /^[0-9]{2}$/.test(cardExpDate) && cardExpDate >= 1 && cardExpDate <= 12 &&
-        /^[0-9]{2}$/.test(cardExpYear) && cardExpYear >= 24 && cardExpYear <= 50) {
-      
+      /^[0-9]{2}$/.test(cardExpYear) && cardExpYear >= 24 && cardExpYear <= 50) {
+
       const userdetail = localStorage.getItem('userdetail');
       const parse = JSON.parse(userdetail);
 
@@ -93,10 +95,10 @@ export default function BuyPage({ data, data2, func }) {
         dispatch(postorder(ord));
         await axios.post(`${link}/product/order`, { ord });
 
-        document.getElementById('success').style.display = 'flex';
+        setOrderSuccess(true); // Show success message
         setTimeout(() => {
           nav('/app');
-          document.getElementById('success').style.display = 'none';
+          setOrderSuccess(false); // Hide success message after navigation
         }, 5000);
       };
 
@@ -237,15 +239,16 @@ export default function BuyPage({ data, data2, func }) {
         </div>
       </div>
 
-      <div
-        id="success"
-        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center text-center z-50 hidden"
-      >
-        <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
-          <img src={tick} alt="Success Tick" className="w-20 mb-4" />
-          <h2 className="text-2xl font-semibold text-green-600">Your Order Has Been Placed Successfully!</h2>
+      {orderSuccess && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center text-center z-50"
+        >
+          <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+            <img src={tick} alt="Success Tick" className="w-20 mb-4" />
+            <h2 className="text-2xl font-semibold text-green-600">Your Order Has Been Placed Successfully!</h2>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
