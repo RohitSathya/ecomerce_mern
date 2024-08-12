@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { fastcount } from './Redux/totalslice';
@@ -8,6 +8,10 @@ import link from './link';
 export default function ProductInfo({ data }) {
   const dispatch = useDispatch();
   const [ati, setati] = useState(data.ati);
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top of the page when the component is mounted
+  }, []);
 
   async function addToCart() {
     const userdetail = localStorage.getItem('userdetail');
