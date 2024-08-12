@@ -5,7 +5,6 @@ import { fastcount } from './Redux/totalslice';
 import axios from 'axios';
 import link from './link';
 
-
 export default function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,7 +20,7 @@ export default function Signup() {
 
   async function handleSubmit() {
     try {
-      const response = await axios.post(link+'/product/register', {
+      const response = await axios.post(link + '/product/register', {
         name,
         phoneno,
         email,
@@ -121,6 +120,14 @@ export default function Signup() {
             className="mt-2 py-2 w-full border border-gray-300 text-indigo-600 font-semibold rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             Sign In
+          </button>
+        </div>
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => navigate('/')}
+            className="py-2 w-full bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-150 ease-in-out"
+          >
+            Back to Home Page
           </button>
         </div>
         <div className="mt-6 text-center text-gray-500 text-sm">
