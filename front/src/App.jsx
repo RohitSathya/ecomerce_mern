@@ -35,10 +35,10 @@ function AppContent() {
 
   const products = [
     {
-      name: 'Iphone13',
+      name: 'Iphone 15',
       category: 'Mobile',
-      price: '400.66 USD',
-      image: 'https://media.croma.com/image/upload/v1662703105/Croma%20Assets/Communication/Mobiles/Images/261963_oqrd6j.png',
+      price: '1200.00 USD',
+      image: 'https://cdn.mos.cms.futurecdn.net/yDn3ZSXu9eSBxmXQDZ4PCF-1200-80.jpg',
       count: 1,
       description: 'Secured and Ultra fast mobile',
       brand: 'Apple',
