@@ -27,7 +27,6 @@ function Products({ data, func, namefunc, pi }) {
     const userdetail = localStorage.getItem('userdetail');
     if (!userdetail) {
       alert('Please log in to add products to your cart.');
-     
       return;
     }
 
@@ -62,12 +61,17 @@ function Products({ data, func, namefunc, pi }) {
 
   return (
     <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden transform hover:-translate-y-1 hover:scale-105 h-[25rem] flex flex-col justify-between">
-      <div className="cursor-pointer" onClick={imgclick}>
+      <div className="relative cursor-pointer" onClick={imgclick}>
         <img
           src={data.image}
           alt={data.name}
           className="w-full h-48 object-cover transition-transform duration-300 ease-in-out hover:scale-110"
         />
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 hover:bg-opacity-50 transition-all duration-300 ease-in-out">
+          <span className="text-white text-lg font-semibold opacity-0 hover:opacity-100 transition-opacity duration-300">
+            View Product
+          </span>
+        </div>
       </div>
       <div className="p-4 flex flex-col justify-between flex-grow">
         <div className="text-center">
