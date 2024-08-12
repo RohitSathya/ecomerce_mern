@@ -62,7 +62,7 @@ export default function Signup() {
               type="text"
               id="name"
               placeholder="First and last name"
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700  focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -77,7 +77,7 @@ export default function Signup() {
               id="phoneno"
               placeholder="Mobile Number"
               maxLength="10"
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700  focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               value={phoneno}
               onChange={(e) => setPhoneNo(e.target.value)}
               required
@@ -91,7 +91,7 @@ export default function Signup() {
               type="email"
               id="email"
               placeholder="Email"
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -105,7 +105,7 @@ export default function Signup() {
               type="password"
               id="password"
               placeholder="Password"
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700  focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
