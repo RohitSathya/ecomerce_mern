@@ -58,9 +58,9 @@ export default function Navbar({ count, func, username }) {
   return (
     <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-4 sm:px-6 lg:px-8 py-3 shadow-lg">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div className="flex items-center space-x-2 sm:space-x-4">
+        <div className="flex items-center space-x-4 sm:space-x-6">
           <img src={royologo} alt="Logo" className="h-8 sm:h-10 cursor-pointer" onClick={() => navigate('/')} />
-          <div className="hidden lg:flex items-center space-x-1 sm:space-x-2">
+          <div className="hidden lg:flex items-center space-x-2 sm:space-x-3">
             <img src={locationlogo} alt="Location" className="h-5 sm:h-6" />
             <span className="font-semibold text-xs sm:text-sm md:text-base">India Since 2018</span>
           </div>
@@ -80,7 +80,7 @@ export default function Navbar({ count, func, username }) {
           </div>
         </div>
 
-        <div className="flex items-center space-x-2 sm:space-x-4">
+        <div className="flex items-center space-x-6 sm:space-x-8">
           <div className="hidden sm:block">
             <span className="font-semibold text-xs sm:text-sm md:text-lg">Hello, {username}</span>
           </div>
@@ -94,11 +94,11 @@ export default function Navbar({ count, func, username }) {
             </span>
           </div>
           {username === 'Guest' ? (
-            <div className="cursor-pointer ml-10" onClick={() => navigate('/login')}>
+            <div className="cursor-pointer ml-8" onClick={() => navigate('/login')}>
               Login
             </div>
           ) : (
-            <img src={logoutIcon} alt="Logout" className="h-6 sm:h-8 md:h-10 cursor-pointer ml-10" onClick={handleLogout} />
+            <img src={logoutIcon} alt="Logout" className="h-6 sm:h-8 md:h-10 cursor-pointer ml-8" onClick={handleLogout} />
           )}
         </div>
       </div>
