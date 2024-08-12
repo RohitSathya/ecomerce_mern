@@ -13,7 +13,6 @@ import four from '../images/4.0.png';
 import fourpoint5 from '../images/4.5.png';
 import five from '../images/5.0.png';
 
-
 function AppContent() {
   const [buyprice, setBuyprice] = useState();
   const [count, setCount] = useState();
@@ -33,11 +32,11 @@ function AppContent() {
     }
   }, []);
 
-  const products = [
+ const products = [
     {
       name: 'Iphone 15',
       category: 'Mobile',
-      price: '1200.00 USD',
+      price: '400.66 USD',
       image: 'https://cdn.mos.cms.futurecdn.net/yDn3ZSXu9eSBxmXQDZ4PCF-1200-80.jpg',
       count: 1,
       description: 'Secured and Ultra fast mobile',
@@ -329,7 +328,6 @@ function AppContent() {
       ]
     },
   ]
-
   const [row1, setRow1] = useState(products.slice(0, 6));
   const [row2, setRow2] = useState(products.slice(6, 12));
 
@@ -355,7 +353,7 @@ function AppContent() {
   const hideNavbar = location.pathname === '/login' || location.pathname === '/signup';
 
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-black to-gray-800 text-white">
       {!hideNavbar && <Navbar data={count} func={getname} username={username} />}
       <div className="container mx-auto px-4 py-8">
         <Routes>
