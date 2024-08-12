@@ -1,95 +1,124 @@
-import React, { useEffect } from 'react';
-import { fastcount } from './Redux/totalslice';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import royologo from '../images/logo.png';
+import locationlogo from '../images/location.png';
+import search from '../images/search.png';
+import cartstore from '../images/cart.png';
+import logoutIcon from '../images/log-out.png';
 import link from './link';
 
-function Products({ data, func, namefunc, pi }) {
+export default function Navbar({ count, func, username }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [cartCount, setCartCount] = useState(count);
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  const counter = useSelector((state) => state.total.count);
+  const fakecounter = useSelector((state) => state.total.fakecount);
+  const fastcount = useSelector((state) => state.total.fastcounte);
 
   useEffect(() => {
-    const userdetail = localStorage.getItem('userdetail');
-    if (userdetail) {
-      const parse = JSON.parse(userdetail);
-      const names = parse.name;
-      namefunc(names);
-    }
-  }, [namefunc]);
+    async function fetchCart() {
+      const userdetail = localStorage.getItem('userdetail');
+      if (userdetail) {
+        const parse = JSON.parse(userdetail);
+        const response = await axios.get(`${link}/product/getcart/${parse._id}`);
+        const { message } = response.data;
 
-  function imgclick() {
-    pi(data);
-    navigate('/productinfo');
-  }
-
-  async function cart() {
-    const userdetail = localStorage.getItem('userdetail');
-    if (!userdetail) {
-      alert('Please log in to add products to your cart.');
-      return;
-    }
-
-    const parse = JSON.parse(userdetail);
-
-    try {
-      const response = await axios.post(
-        `${link}/product/cart`,
-        {
-          name: data.name,
-          category: data.category,
-          price: data.price,
-          image: data.image,
-          uid: parse._id,
+        if (message === 'f') {
+          setCartCount(0);
+        } else {
+          setCartCount(response.data.length);
         }
-      );
-
-      const { message } = response.data;
-      if (message === 'f') {
-        alert('Product already added to cart');
-      } else {
-        const count = await axios.get(
-          `${link}/product/getcart/${parse._id}`
-        );
-        dispatch(fastcount());
-        func(count.data.length);
       }
-    } catch (error) {
-      console.error(error);
     }
-  }
+    fetchCart();
+  }, [count, counter, fakecounter, fastcount]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('userdetail');
+    navigate('/login');
+  };
+
+  const handleOrdersClick = () => {
+    if (username === 'Guest') {
+      alert('Please log in to view your orders.');
+    } else {
+      navigate('/order');
+    }
+  };
+
+  const handleCartClick = () => {
+    if (username === 'Guest') {
+      alert('Please log in to view your cart.');
+    } else {
+      navigate('/cart');
+    }
+  };
+
+  const toggleOverlay = () => {
+    setShowOverlay(!showOverlay);
+  };
+
+  const handleImgClick = () => {
+    if (showOverlay) {
+      // Navigate to product info if the overlay is already shown
+      pi(data);
+      navigate('/productinfo');
+    } else {
+      // Otherwise, just show the overlay
+      setShowOverlay(true);
+    }
+  };
 
   return (
-    <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden transform hover:-translate-y-1 hover:scale-105 h-[25rem] flex flex-col justify-between">
-      <div className="relative cursor-pointer" onClick={imgclick}>
-        <img
-          src={data.image}
-          alt={data.name}
-          className="w-full h-48 object-cover transition-transform duration-300 ease-in-out hover:scale-110"
-        />
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 hover:bg-opacity-50 transition-all duration-300 ease-in-out">
-          <span className="text-white text-lg font-semibold opacity-0 hover:opacity-100 transition-opacity duration-300">
-            View Product
-          </span>
+    <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-3 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="flex items-center space-x-4 sm:space-x-6">
+          <img src={royologo} alt="Logo" className="h-8 sm:h-12 cursor-pointer hidden sm:block" onClick={() => navigate('/')} />
+          <div className="hidden lg:flex items-center space-x-2 sm:space-x-3">
+            <img src={locationlogo} alt="Location" className="h-5 sm:h-6" />
+            <span className="font-semibold text-sm sm:text-base md:text-lg">India Since 2018</span>
+          </div>
         </div>
-      </div>
-      <div className="p-4 flex flex-col justify-between flex-grow">
-        <div className="text-center">
-          <h3 className="text-lg font-bold text-white mb-2">{data.name}</h3>
-          <p className="text-yellow-200 font-semibold text-xl mb-2">{data.price}</p>
-          <p className="text-sm text-gray-200 mb-4">Category: {data.category}</p>
+
+        <div className="flex-1 flex justify-center">
+          <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg">
+            <input
+              type="text"
+              placeholder="Search Royofist.in"
+              className="w-full px-4 py-2 rounded-md border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              onChange={(e) => func(e.target.value)}
+            />
+            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:pr-3">
+              <img src={search} alt="Search" className="h-4 sm:h-5 cursor-pointer" />
+            </div>
+          </div>
         </div>
-        <div className="flex justify-center">
-          <button
-            className="bg-yellow-500 text-gray-800 font-semibold px-4 py-2 rounded-md hover:bg-yellow-600 hover:text-white transition-colors duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-yellow-300"
-            onClick={cart}
-          >
-            Add to Cart
-          </button>
+
+        <div className="flex items-center space-x-6 sm:space-x-8">
+          <div className="hidden sm:block">
+            <span className="font-semibold text-xs sm:text-sm md:text-lg">Hello, {username}</span>
+          </div>
+          <div className="cursor-pointer font-semibold text-xs sm:text-sm md:text-lg" onClick={handleOrdersClick}>
+            Your Orders
+          </div>
+          <div className="relative cursor-pointer" onClick={handleCartClick}>
+            <img src={cartstore} alt="Cart" className="h-5 sm:h-6 md:h-8" />
+            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[8px] sm:text-[10px] md:text-xs font-bold rounded-full w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex items-center justify-center">
+              {cartCount}
+            </span>
+          </div>
+          {username === 'Guest' ? (
+            <div className="cursor-pointer ml-6 sm:ml-8" onClick={() => navigate('/login')}>
+              Login
+            </div>
+          ) : (
+            <img src={logoutIcon} alt="Logout" className="h-5 sm:h-6 md:h-8 cursor-pointer ml-6 sm:ml-8" onClick={handleLogout} />
+          )}
         </div>
       </div>
     </div>
   );
 }
-
-export default Products;
