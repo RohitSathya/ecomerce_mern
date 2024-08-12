@@ -97,7 +97,7 @@ export default function BuyPage({ data, data2, func }) {
 
         setOrderSuccess(true); // Show success message
         setTimeout(() => {
-          nav('/app');
+          nav('/');
           setOrderSuccess(false); // Hide success message after navigation
         }, 5000);
       };
