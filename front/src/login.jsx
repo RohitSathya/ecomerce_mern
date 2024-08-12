@@ -29,7 +29,7 @@ export default function Login() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 p-4">
-      <div className="w-full max-w-md bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-8 transform transition-all hover:scale-105 hover:shadow-xl">
+      <div className="w-full max-w-md bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
           <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
             ROYOMART
@@ -65,7 +65,7 @@ export default function Login() {
           </div>
           <button
             onClick={handleSubmit}
-            className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold rounded-md shadow-md hover:bg-gradient-to-l focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out transform hover:scale-105"
+            className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold rounded-md shadow-md hover:bg-gradient-to-l focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
           >
             Sign In
           </button>
