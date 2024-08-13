@@ -369,11 +369,12 @@ function AppContent() {
             path="/"
             element={
               <>
-                <div className="grid grid-cols-1  md:grid-cols-3 lg:grid-cols-4 gap-8">
-                  {filteredProducts.map((p) => (
-                    <Products key={p.name} data={p} func={getcount} namefunc={setUsername} pi={setProductinfo} />
-                  ))}
-                </div>
+               <div className="grid grid-cols-4 gap-8">
+  {filteredProducts.map((p) => (
+    <Products key={p.name} data={p} func={getcount} namefunc={setUsername} pi={setProductinfo} />
+  ))}
+</div>
+
               </>
             }
           />
