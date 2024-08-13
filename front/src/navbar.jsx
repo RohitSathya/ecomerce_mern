@@ -8,6 +8,7 @@ import search from '../images/search.png';
 import cartstore from '../images/cart.png';
 import logoutIcon from '../images/log-out.png';
 import link from './link';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function Navbar({ count, func, username }) {
@@ -43,8 +44,7 @@ export default function Navbar({ count, func, username }) {
   
   const handleOrdersClick = () => {
     if (username === 'Guest') {
-     alert("Please log in to view your orders")
-   
+      toast.warn("Please log in to view your orders");
     } else {
       navigate('/order');
     }
@@ -52,8 +52,7 @@ export default function Navbar({ count, func, username }) {
 
   const handleCartClick = () => {
     if (username === 'Guest') {
-          alert("Please log in to view your cart")
-   
+      toast.warn("Please log in to view your cart");
     } else {
       navigate('/cart');
     }
@@ -61,18 +60,19 @@ export default function Navbar({ count, func, username }) {
 
   return (
     <>
+      <ToastContainer />
       <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white py-2 sm:py-3 shadow-lg">
-        <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          <div className="flex items-center space-x-4 sm:space-x-6">
-            <img src={royologo} alt="Logo" className="h-8 sm:h-12 cursor-pointer" onClick={() => navigate('/')} />
-            <div className="flex items-center space-x-2 sm:space-x-3">
+        <div className="w-full flex items-center justify-between px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center space-x-4">
+            <img src={royologo} alt="Logo" className="h-8 sm:h-10 lg:h-12 cursor-pointer" onClick={() => navigate('/')} />
+            <div className="hidden md:flex items-center space-x-3">
               <img src={locationlogo} alt="Location" className="h-5 sm:h-6" />
               <span className="font-semibold text-sm sm:text-base md:text-lg">India Since 2018</span>
             </div>
           </div>
 
-          <div className="flex-1 flex justify-center">
-            <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
+          <div className="flex-1 flex justify-center mx-4">
+            <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-2xl">
               <input
                 type="text"
                 placeholder="Search Royofist.in"
@@ -85,9 +85,12 @@ export default function Navbar({ count, func, username }) {
             </div>
           </div>
 
-          <div className="flex items-center space-x-6 sm:space-x-8">
+          <div className="flex items-center space-x-6">
             <div className="hidden sm:block">
               <span className="font-semibold text-xs sm:text-sm md:text-lg">Hello, {username}</span>
+            </div>
+            <div className="hidden lg:block cursor-pointer font-semibold text-xs sm:text-sm md:text-lg" onClick={() => navigate('/products')}>
+              Products
             </div>
             <div className="cursor-pointer font-semibold text-xs sm:text-sm md:text-lg" onClick={handleOrdersClick}>
               Your Orders
@@ -101,11 +104,11 @@ export default function Navbar({ count, func, username }) {
               )}
             </div>
             {username === 'Guest' ? (
-              <div className="cursor-pointer ml-6 sm:ml-8" onClick={() => navigate('/login')}>
+              <div className="cursor-pointer" onClick={() => navigate('/login')}>
                 Login
               </div>
             ) : (
-              <img src={logoutIcon} alt="Logout" className="h-5 sm:h-6 md:h-8 cursor-pointer ml-6 sm:ml-8" onClick={handleLogout} />
+              <img src={logoutIcon} alt="Logout" className="h-5 sm:h-6 md:h-8 cursor-pointer" onClick={handleLogout} />
             )}
           </div>
         </div>
