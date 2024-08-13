@@ -3,8 +3,6 @@ import { fastcount } from './Redux/totalslice';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import link from './link';
 
 function Products({ data, func, namefunc, pi }) {
@@ -40,7 +38,7 @@ function Products({ data, func, namefunc, pi }) {
   async function cart() {
     const userdetail = localStorage.getItem('userdetail');
     if (!userdetail) {
-      toast.warn("Please log in to add products to your cart");
+      alert("Please log in to add products to your cart")
       return;
     }
 
@@ -75,7 +73,7 @@ function Products({ data, func, namefunc, pi }) {
 
   return (
     <>
-      <ToastContainer />
+   
       <div
         className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden transform hover:-translate-y-1 hover:scale-105 flex flex-col justify-between relative h-80"
       >
