@@ -19,6 +19,7 @@ function AppContent() {
   const [username, setUsername] = useState('Guest');
   const [buydata, setBuydata] = useState([]);
   const [productinfo, setProductinfo] = useState({});
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const location = useLocation();
 
@@ -338,17 +339,22 @@ function AppContent() {
     },
   ]
 
+  // Set initial products on mount
+  useEffect(() => {
+    setFilteredProducts(products);
+  }, []);
+
   const getcount = (e) => {
     setCount(e);
   };
 
-  const getname = (e) => {
-    const searchText = e.toLowerCase();
+  const getname = (searchText) => {
+    searchText = searchText.toLowerCase();
     if (searchText !== '') {
-      const filteredProducts = products.filter((p) => p.name.toLowerCase().startsWith(searchText));
-      setRow1(filteredProducts);
+      const filtered = products.filter((p) => p.name.toLowerCase().startsWith(searchText));
+      setFilteredProducts(filtered);
     } else {
-      setRow1(products);
+      setFilteredProducts(products);
     }
   };
 
@@ -364,7 +370,7 @@ function AppContent() {
             element={
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                  {products.map((p) => (
+                  {filteredProducts.map((p) => (
                     <Products key={p.name} data={p} func={getcount} namefunc={setUsername} pi={setProductinfo} />
                   ))}
                 </div>
