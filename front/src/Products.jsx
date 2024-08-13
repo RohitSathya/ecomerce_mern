@@ -3,6 +3,8 @@ import { fastcount } from './Redux/totalslice';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import link from './link';
 
 function Products({ data, func, namefunc, pi }) {
@@ -38,7 +40,7 @@ function Products({ data, func, namefunc, pi }) {
   async function cart() {
     const userdetail = localStorage.getItem('userdetail');
     if (!userdetail) {
-      alert('Please log in to add products to your cart.');
+      toast.warn("Please Login To View Cart")
       return;
     }
 
@@ -58,7 +60,7 @@ function Products({ data, func, namefunc, pi }) {
 
       const { message } = response.data;
       if (message === 'f') {
-        alert('Product already added to cart');
+        toast.warn("Product Already Added to Cart")
       } else {
         const count = await axios.get(
           `${link}/product/getcart/${parse._id}`
@@ -72,7 +74,9 @@ function Products({ data, func, namefunc, pi }) {
   }
 
   return (
-    <div
+    <>
+      <ToastContainer />
+      <div
       className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out overflow-hidden transform hover:-translate-y-1 hover:scale-105 h-[25rem] flex flex-col justify-between relative"
     >
       <div className="relative cursor-pointer" onClick={imgclick}>
@@ -118,6 +122,9 @@ function Products({ data, func, namefunc, pi }) {
         </div>
       </div>
     </div>
+      
+    </>
+    
   );
 }
 
