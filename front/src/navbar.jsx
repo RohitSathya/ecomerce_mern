@@ -8,6 +8,8 @@ import search from '../images/search.png';
 import cartstore from '../images/cart.png';
 import logoutIcon from '../images/log-out.png';
 import link from './link';
+ import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Navbar({ count, func, username }) {
   const navigate = useNavigate();
@@ -41,7 +43,7 @@ export default function Navbar({ count, func, username }) {
   };
   const handleOrdersClick = () => {
     if (username === 'Guest') {
-      alert('Please log in to view your orders.');
+      toast.warn("Please log in to view your orders")
     } else {
       navigate('/order');
     }
@@ -49,14 +51,16 @@ export default function Navbar({ count, func, username }) {
 
   const handleCartClick = () => {
     if (username === 'Guest') {
-      alert('Please log in to view your cart.');
+      toast.warn("Please log in to view your cart")
     } else {
       navigate('/cart');
     }
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-3 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg">
+    <>
+      <ToastContainer />
+      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-3 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-4 sm:space-x-6">
           <img src={royologo} alt="Logo" className="h-8 sm:h-12 cursor-pointer hidden sm:block" onClick={() => navigate('/')} />
@@ -106,5 +110,8 @@ export default function Navbar({ count, func, username }) {
         </div>
       </div>
     </div>
+      
+    </>
+    
   );
 }
