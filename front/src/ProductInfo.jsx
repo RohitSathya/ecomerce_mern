@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { fastcount } from './Redux/totalslice';
 import features from '../images/features.png';
 import link from './link';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ProductInfo({ data }) {
   const dispatch = useDispatch();
@@ -17,7 +19,8 @@ export default function ProductInfo({ data }) {
     const userdetail = localStorage.getItem('userdetail');
     
     if (!userdetail) {
-      alert('Please log in to add products to your cart.');
+      toast.warn("Please log in to add products to your cart")
+      
       return;
     }
     
@@ -40,7 +43,9 @@ export default function ProductInfo({ data }) {
   }
 
   return (
-    <div className="flex flex-col md:flex-row justify-center items-center md:items-start bg-white p-4 md:p-8 gap-8 md:gap-16">
+    <>
+       <ToastContainer />
+       <div className="flex flex-col md:flex-row justify-center items-center md:items-start bg-white p-4 md:p-8 gap-8 md:gap-16">
       <div className="w-full md:w-1/2 flex justify-center">
         <img
           src={data.image}
@@ -89,5 +94,7 @@ export default function ProductInfo({ data }) {
         </button>
       </div>
     </div>
+    </>
+   
   );
 }
