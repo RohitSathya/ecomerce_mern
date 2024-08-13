@@ -22,7 +22,7 @@ function AppContent() {
 
   const location = useLocation();
 
-   useEffect(() => {
+  useEffect(() => {
     // Load the AdSense script
     const script = document.createElement('script');
     script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3637280211559707';
@@ -41,7 +41,7 @@ function AppContent() {
     }
   }, []);
 
- const products = [
+  const products = [
     {
       name: 'Iphone 15',
       category: 'Mobile',
@@ -337,27 +337,20 @@ function AppContent() {
       ]
     },
   ]
-  const [row1, setRow1] = useState(products.slice(0, 6));
-  const [row2, setRow2] = useState(products.slice(6, 12));
 
-  function getcount(e) {
+  const getcount = (e) => {
     setCount(e);
-  }
+  };
 
-  function getname(e) {
+  const getname = (e) => {
     const searchText = e.toLowerCase();
     if (searchText !== '') {
-      setRow1(
-        products.slice(0, 6).filter((p) => p.name.toLowerCase().startsWith(searchText))
-      );
-      setRow2(
-        products.slice(6, 12).filter((p) => p.name.toLowerCase().startsWith(searchText))
-      );
+      const filteredProducts = products.filter((p) => p.name.toLowerCase().startsWith(searchText));
+      setRow1(filteredProducts);
     } else {
-      setRow1(products.slice(0, 6));
-      setRow2(products.slice(6, 12));
+      setRow1(products);
     }
-  }
+  };
 
   const hideNavbar = location.pathname === '/login' || location.pathname === '/signup';
 
@@ -370,13 +363,8 @@ function AppContent() {
             path="/"
             element={
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-8">
-                  {row1.map((p) => (
-                    <Products key={p.name} data={p} func={getcount} namefunc={setUsername} pi={setProductinfo} />
-                  ))}
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-8 mt-12">
-                  {row2.map((p) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                  {products.map((p) => (
                     <Products key={p.name} data={p} func={getcount} namefunc={setUsername} pi={setProductinfo} />
                   ))}
                 </div>
