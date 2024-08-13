@@ -24,7 +24,7 @@ export default function Navbar({ count, func, username }) {
       const userdetail = localStorage.getItem('userdetail');
       if (userdetail) {
         const parse = JSON.parse(userdetail);
-        const response = await axios.get(`${link}/product/getcart/${parse._id}`);
+       const response = await axios.get(`${link}/product/getcart/${parse._id}`);
         const { message } = response.data;
 
         if (message === 'f') {
