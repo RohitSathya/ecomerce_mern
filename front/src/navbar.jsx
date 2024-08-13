@@ -8,8 +8,7 @@ import search from '../images/search.png';
 import cartstore from '../images/cart.png';
 import logoutIcon from '../images/log-out.png';
 import link from './link';
- import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Navbar({ count, func, username }) {
   const navigate = useNavigate();
@@ -24,7 +23,7 @@ export default function Navbar({ count, func, username }) {
       const userdetail = localStorage.getItem('userdetail');
       if (userdetail) {
         const parse = JSON.parse(userdetail);
-       const response = await axios.get(`${link}/product/getcart/${parse._id}`);
+       const response = await axios.get(`${link}/product/getcart/${parse._id}`)
         const { message } = response.data;
 
         if (message === 'f') {
@@ -43,7 +42,8 @@ export default function Navbar({ count, func, username }) {
   };
   const handleOrdersClick = () => {
     if (username === 'Guest') {
-      toast.warn("Please log in to view your orders")
+     alert("Please log in to view your orders")
+   
     } else {
       navigate('/order');
     }
@@ -51,7 +51,8 @@ export default function Navbar({ count, func, username }) {
 
   const handleCartClick = () => {
     if (username === 'Guest') {
-      toast.warn("Please log in to view your cart")
+     alert("Please log in to view your cart")
+     
     } else {
       navigate('/cart');
     }
@@ -59,7 +60,7 @@ export default function Navbar({ count, func, username }) {
 
   return (
     <>
-      <ToastContainer />
+      
       <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-3 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-4 sm:space-x-6">
