@@ -87,12 +87,15 @@ export default function Navbar({ count, func, username }) {
           <div className="cursor-pointer font-semibold text-xs sm:text-sm md:text-lg" onClick={handleOrdersClick}>
             Your Orders
           </div>
-          <div className="relative cursor-pointer" onClick={handleCartClick}>
-            <img src={cartstore} alt="Cart" className="h-5 sm:h-6 md:h-8" />
+         <div className="relative cursor-pointer" onClick={handleCartClick}>
+          <img src={cartstore} alt="Cart" className="h-5 sm:h-6 md:h-8" />
+           {username !== 'Guest' && (
             <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[8px] sm:text-[10px] md:text-xs font-bold rounded-full w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex items-center justify-center">
-              {cartCount}
-            </span>
-          </div>
+               {cartCount}
+             </span>
+                 )}
+        </div>
+
           {username === 'Guest' ? (
             <div className="cursor-pointer ml-6 sm:ml-8" onClick={() => navigate('/login')}>
               Login
