@@ -40,7 +40,7 @@ function Products({ data, func, namefunc, pi }) {
   async function cart() {
     const userdetail = localStorage.getItem('userdetail');
     if (!userdetail) {
-      toast.warn("Please Login To View Cart")
+      toast.warn("Please log in to add products to your cart")
       return;
     }
 
