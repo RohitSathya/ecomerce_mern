@@ -252,11 +252,52 @@ export default function BuyPage({ data, data2, func }) {
 
       {orderSuccess && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center text-center z-50"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 50,
+            textAlign: 'center',
+            animation: 'fadeInUp 0.5s ease-out',
+          }}
         >
-          <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
-            <img src={tick} alt="Success Tick" className="w-20 mb-4" />
-            <h2 className="text-2xl font-semibold text-green-600">Your Order Has Been Placed Successfully!</h2>
+          <div
+            style={{
+              backgroundColor: 'white',
+              padding: '1.5rem',
+              borderRadius: '0.5rem',
+              boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              animation: 'bounce 1s infinite',
+            }}
+          >
+            <img src={tick} alt="Success Tick" style={{ width: '5rem', marginBottom: '1rem' }} />
+            <h2 style={{ fontSize: '1.5rem', fontWeight: '600', color: '#22c55e' }}>
+              Your Order Has Been Placed Successfully!
+            </h2>
+            <p style={{ color: '#4b5563', marginTop: '0.5rem' }}>Thank you for shopping with us!</p>
+            <button
+              style={{
+                marginTop: '1.5rem',
+                backgroundColor: '#3b82f6',
+                hover: { backgroundColor: '#2563eb' },
+                color: 'white',
+                fontWeight: '600',
+                padding: '0.5rem 1rem',
+                borderRadius: '0.375rem',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                outline: 'none',
+                cursor: 'pointer',
+              }}
+              onClick={() => nav('/')}
+            >
+              Continue Shopping
+            </button>
           </div>
         </div>
       )}
