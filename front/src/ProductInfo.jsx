@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { fastcount } from './Redux/totalslice';
-import features from '../images/features.png';
+import { FaShippingFast, FaRegCheckCircle, FaRegCreditCard, FaStar } from 'react-icons/fa';
+import { BiSupport } from 'react-icons/bi';
 import link from './link';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -76,8 +77,27 @@ export default function ProductInfo({ data }) {
           <div className="text-gray-700 font-medium text-lg mb-6">
             <p>Including all taxes</p>
           </div>
-          <div className="mb-6">
-            <img src={features} alt="Features" className="w-full h-auto object-contain" />
+          <div className="mb-6 grid grid-cols-2 gap-4 text-center">
+            <div>
+              <BiSupport size={40} className="mx-auto text-orange-500" />
+              <p className="mt-2 text-sm text-gray-700">7 days service center</p>
+            </div>
+            <div>
+              <FaShippingFast size={40} className="mx-auto text-orange-500" />
+              <p className="mt-2 text-sm text-gray-700">free delivery</p>
+            </div>
+            <div>
+              <FaRegCheckCircle size={40} className="mx-auto text-orange-500" />
+              <p className="mt-2 text-sm text-gray-700">warranty policy</p>
+            </div>
+            <div>
+              <FaRegCreditCard size={40} className="mx-auto text-orange-500" />
+              <p className="mt-2 text-sm text-gray-700">pay on delivery</p>
+            </div>
+            <div>
+              <FaStar size={40} className="mx-auto text-orange-500" />
+              <p className="mt-2 text-sm text-gray-700">top brand</p>
+            </div>
           </div>
           <div className="text-xl font-semibold mb-4">About this item</div>
           <ul className="list-disc list-inside text-lg text-gray-700 mb-6">
