@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import axios from 'axios';
 import Navbar from './navbar';
 import Products from './Products';
 import Cart from './Cart';
@@ -12,6 +13,16 @@ import threepoint5 from '../images/3.5.png';
 import four from '../images/4.0.png';
 import fourpoint5 from '../images/4.5.png';
 import five from '../images/5.0.png';
+import AdminPanel from './AdminPanel';
+import link from './link'; // Assume this is your backend URL
+
+const ratingImages = {
+  5: five,
+  4.5: fourpoint5,
+  4: four,
+  3.5: threepoint5,
+  // Add more mappings as needed
+};
 
 function AppContent() {
   const [buyprice, setBuyprice] = useState();
@@ -20,6 +31,7 @@ function AppContent() {
   const [buydata, setBuydata] = useState([]);
   const [productinfo, setProductinfo] = useState({});
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [uploadedProducts, setUploadedProducts] = useState([]); // New state for uploaded products
 
   const location = useLocation();
 
@@ -339,10 +351,41 @@ function AppContent() {
     },
   ]
 
-  // Set initial products on mount
+  // Fetch products from backend and combine them with static products
   useEffect(() => {
-    setFilteredProducts(products);
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`${link}/pro/all`); // Fetch products from your backend
+        const backendProducts = response.data.map(product => {
+          // Determine the correct rating image based on the rating value
+          let ratingImage = null;
+          if (product.rating >= 5) {
+            ratingImage = five;
+          } else if (product.rating >= 4.5) {
+            ratingImage = fourpoint5;
+          } else if (product.rating >= 4) {
+            ratingImage = four;
+          } else if (product.rating >= 3.5) {
+            ratingImage = threepoint5;
+          }
+          // Add the ratingimg property to each product
+          return {
+            ...product,
+            ratingimg: ratingImage, // Assign the appropriate rating image
+          };
+        });
+  
+        // Combine static and backend products
+        setFilteredProducts([...products, ...backendProducts]);
+      } catch (error) {
+        console.error('Error fetching products from backend:', error);
+      }
+    };
+  
+    fetchProducts();
   }, []);
+  
+  
 
   const getcount = (e) => {
     setCount(e);
@@ -351,14 +394,14 @@ function AppContent() {
   const getname = (searchText) => {
     searchText = searchText.toLowerCase();
     if (searchText !== '') {
-      const filtered = products.filter((p) => p.name.toLowerCase().startsWith(searchText));
+      const filtered = filteredProducts.filter((p) => p.name.toLowerCase().startsWith(searchText));
       setFilteredProducts(filtered);
     } else {
-      setFilteredProducts(products);
+      setFilteredProducts([...products, ...uploadedProducts]);
     }
   };
 
-  const hideNavbar = location.pathname === '/login' || location.pathname === '/signup';
+  const hideNavbar = location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/admin';
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-800 via-black to-gray-800 text-white">
@@ -369,21 +412,18 @@ function AppContent() {
             path="/"
             element={
               <>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-  {filteredProducts.map((p) => (
-    <Products key={p.name} data={p} func={getcount} namefunc={setUsername} pi={setProductinfo} />
-  ))}
-</div>
-
-
-
-
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                  {filteredProducts.map((p) => (
+                    <Products key={p._id || p.name} data={p} func={getcount} namefunc={setUsername} pi={setProductinfo} />
+                  ))}
+                </div>
               </>
             }
           />
           <Route path="/cart" element={<Cart func={setBuyprice} funce={setBuydata} />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<AdminPanel />} />
           <Route path="/buy" element={<BuyPage data={buyprice} func={setCount} data2={buydata} />} />
           <Route path="/order" element={<Myoder />} />
           <Route path="/productinfo" element={<ProductInfo data={productinfo} />} />
