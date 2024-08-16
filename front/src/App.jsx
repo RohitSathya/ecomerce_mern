@@ -52,7 +52,7 @@ function AppContent() {
     } else {
       setUsername('Guest');
     }
-  }, []);
+  });
 
   const products = [
     {
