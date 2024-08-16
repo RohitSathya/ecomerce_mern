@@ -34,6 +34,38 @@ function AppContent() {
   const [uploadedProducts, setUploadedProducts] = useState([]); // New state for uploaded products
 
   const location = useLocation();
+   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`${link}/pro/all`); // Fetch products from your backend
+        const backendProducts = response.data.map(product => {
+          // Determine the correct rating image based on the rating value
+          let ratingImage = null;
+          if (product.rating >= 5) {
+            ratingImage = five;
+          } else if (product.rating >= 4.5) {
+            ratingImage = fourpoint5;
+          } else if (product.rating >= 4) {
+            ratingImage = four;
+          } else if (product.rating >= 3.5) {
+            ratingImage = threepoint5;
+          }
+          // Add the ratingimg property to each product
+          return {
+            ...product,
+            ratingimg: ratingImage, // Assign the appropriate rating image
+          };
+        });
+  
+        // Combine static and backend products
+        setFilteredProducts([...products, ...backendProducts]);
+      } catch (error) {
+        console.error('Error fetching products from backend:', error);
+      }
+    };
+  
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
     // Load the AdSense script
@@ -352,38 +384,7 @@ function AppContent() {
   ]
 
   // Fetch products from backend and combine them with static products
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(`${link}/pro/all`); // Fetch products from your backend
-        const backendProducts = response.data.map(product => {
-          // Determine the correct rating image based on the rating value
-          let ratingImage = null;
-          if (product.rating >= 5) {
-            ratingImage = five;
-          } else if (product.rating >= 4.5) {
-            ratingImage = fourpoint5;
-          } else if (product.rating >= 4) {
-            ratingImage = four;
-          } else if (product.rating >= 3.5) {
-            ratingImage = threepoint5;
-          }
-          // Add the ratingimg property to each product
-          return {
-            ...product,
-            ratingimg: ratingImage, // Assign the appropriate rating image
-          };
-        });
-  
-        // Combine static and backend products
-        setFilteredProducts([...products, ...backendProducts]);
-      } catch (error) {
-        console.error('Error fetching products from backend:', error);
-      }
-    };
-  
-    fetchProducts();
-  }, []);
+ 
   
   
 
