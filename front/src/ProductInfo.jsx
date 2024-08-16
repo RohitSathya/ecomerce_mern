@@ -7,10 +7,15 @@ import { BiSupport } from 'react-icons/bi';
 import link from './link';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import InnerImageZoom from 'react-inner-image-zoom';
+import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 export default function ProductInfo({ data }) {
   const dispatch = useDispatch();
-  const [ati, setati] = useState(data.ati);
+  const [ati, setati] = useState(data?.ati || []);
 
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top of the page when the component is mounted
@@ -18,12 +23,10 @@ export default function ProductInfo({ data }) {
 
   async function addToCart() {
     const userdetail = localStorage.getItem('userdetail');
-    
     if (!userdetail) {
       toast.warn("Please log in to add products to your cart");
       return;
     }
-    
     const parse = JSON.parse(userdetail);
     const response = await axios.post(`${link}/product/cart`, {
       name: data.name,
@@ -32,7 +35,6 @@ export default function ProductInfo({ data }) {
       image: data.image,
       uid: parse._id,
     });
-    
     const { message } = response.data;
     if (message === 'f') {
       alert('Product already added to cart');
@@ -42,13 +44,22 @@ export default function ProductInfo({ data }) {
     }
   }
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
   return (
     <>
       <ToastContainer />
       <div className="flex flex-col md:flex-row justify-center items-center md:items-start bg-white p-4 md:p-8 gap-8 md:gap-16">
         <div className="w-full md:w-1/2 flex justify-center">
-          <img
+          <InnerImageZoom
             src={data.image}
+            zoomSrc={data.image}
             alt={data.name}
             className="w-full h-auto max-h-[600px] object-contain rounded-lg shadow-md"
           />
@@ -68,10 +79,10 @@ export default function ProductInfo({ data }) {
             <b className="text-4xl text-red-600">{data.dis}</b>
           </div>
           <div className="mb-4">
-            <b className="text-3xl text-gray-900">${data.price}</b>
+            <b className="text-3xl text-gray-900">{data.price}</b>
           </div>
           <div className="text-gray-500 text-sm mb-4">
-            <p className="line-through">MRP: $ {data.mrp}</p>
+            <p className="line-through">MRP: {data.mrp}</p>
           </div>
           <div className="border-b border-gray-300 mb-4"></div>
           <div className="text-gray-700 font-medium text-lg mb-6">
