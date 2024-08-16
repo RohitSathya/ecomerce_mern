@@ -24,7 +24,9 @@ export default function BuyPage({ data, data2, func }) {
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpDate, setCardExpDate] = useState('');
   const [cardExpYear, setCardExpYear] = useState('');
+  const [upiId, setUpiId] = useState('');
   const [orderSuccess, setOrderSuccess] = useState(false); // State to manage success message visibility
+  const [paymentMethod, setPaymentMethod] = useState('card'); // Payment method state
 
   const nav = useNavigate();
   const dispatch = useDispatch();
@@ -83,39 +85,41 @@ export default function BuyPage({ data, data2, func }) {
   };
 
   const handlePayment = () => {
-    if (/^[0-9]{16}$/.test(cardNumber) && /^[0-9]{2}$/.test(cardExpDate) && cardExpDate >= 1 && cardExpDate <= 12 &&
-      /^[0-9]{2}$/.test(cardExpYear) && cardExpYear >= 24 && cardExpYear <= 50) {
+    if (paymentMethod === 'card') {
+      if (/^[0-9]{16}$/.test(cardNumber) && /^[0-9]{2}$/.test(cardExpDate) && cardExpDate >= 1 && cardExpDate <= 12 &&
+        /^[0-9]{2}$/.test(cardExpYear) && cardExpYear >= 24 && cardExpYear <= 50) {
 
-      const userdetail = localStorage.getItem('userdetail');
-      const parse = JSON.parse(userdetail);
-
-      const processOrder = async () => {
-        await axios.delete(`${link}/product/dcart/${parse._id}`);
-        dispatch(fastcount());
-        dispatch(postorder(ord));
-        const mm = await axios.post(`${link}/product/order`, { ord });
-        const { m } = mm.data;
-
-        if (m === 's') {
-          setOrderSuccess(true);
-          setTimeout(async () => {
-            // Proceed with the rest of the order process
-            dispatch(fastcount());
-            dispatch(postorder(ord));
-            await axios.post(`${link}/product/order`, { ord });
-
-            // Navigate to the home page
-            nav('/');
-
-            // Hide success message
-            setOrderSuccess(false);
-          }, 5000);
-        }
-      };
-
+        processOrder();
+      } else {
+        alert('Invalid card details!');
+      }
+    } else if (paymentMethod === 'upi') {
+      if (/^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/.test(upiId)) {
+        processOrder();
+      } else {
+        alert('Invalid UPI ID!');
+      }
+    } else if (paymentMethod === 'cod') {
       processOrder();
-    } else {
-      alert('Invalid card details!');
+    }
+  };
+
+  const processOrder = async () => {
+    const userdetail = localStorage.getItem('userdetail');
+    const parse = JSON.parse(userdetail);
+
+    await axios.delete(`${link}/product/dcart/${parse._id}`);
+    dispatch(fastcount());
+    dispatch(postorder(ord));
+    const mm = await axios.post(`${link}/product/order`, { ord });
+    const { m } = mm.data;
+
+    if (m === 's') {
+      setOrderSuccess(true);
+      setTimeout(() => {
+        nav('/');
+        setOrderSuccess(false);
+      }, 5000);
     }
   };
 
@@ -206,49 +210,128 @@ export default function BuyPage({ data, data2, func }) {
         </div>
       )}
 
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl payment" id="payment">
-        <h2 className="text-xl font-semibold mb-4 text-blue-600">Payment Details</h2>
-        <label className="block text-sm font-medium mb-2 text-gray-700 ">Card Number</label>
-        <input
-          type="text"
-          maxLength="16"
-          className="w-full p-2 mb-4 border rounded-md text-gray-700"
-          value={cardNumber}
-          onChange={(e) => setCardNumber(e.target.value)}
-        />
-        <div className="flex space-x-4 mb-4">
-          <div>
-            <label className="block text-sm font-medium mb-2 text-gray-700">Exp Month</label>
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl mb-6">
+        <h2 className="text-xl font-semibold mb-4 text-blue-600">Payment Options</h2>
+        <div className="mb-4">
+          <label className="inline-flex items-center">
             <input
-              type="text"
-              maxLength="2"
-              className="w-full p-2 border rounded-md text-gray-700"
-              value={cardExpDate}
-              onChange={(e) => setCardExpDate(e.target.value)}
+              type="radio"
+              className="form-radio text-blue-600"
+              name="paymentMethod"
+              value="card"
+              checked={paymentMethod === 'card'}
+              onChange={() => setPaymentMethod('card')}
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-2 text-gray-700">Exp Year</label>
-            <input
-              type="text"
-              maxLength="2"
-              className="w-full p-2 border rounded-md text-gray-700"
-              value={cardExpYear}
-              onChange={(e) => setCardExpYear(e.target.value)}
-            />
-          </div>
+            <span className="ml-2 text-gray-700">Card Payment</span>
+          </label>
         </div>
-        <button
-          className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 rounded-md"
-          onClick={handlePayment}
-        >
-          Pay and Order
-        </button>
-        <div className="text-center mt-4">
-          <b>Accepted Here</b>
-          <img src={card} alt="Accepted Cards" className="mt-2" />
+        <div className="mb-4">
+          <label className="inline-flex items-center">
+            <input
+              type="radio"
+              className="form-radio text-blue-600"
+              name="paymentMethod"
+              value="upi"
+              checked={paymentMethod === 'upi'}
+              onChange={() => setPaymentMethod('upi')}
+            />
+            <span className="ml-2 text-gray-700">UPI Payment</span>
+          </label>
+        </div>
+        <div className="mb-4">
+          <label className="inline-flex items-center">
+            <input
+              type="radio"
+              className="form-radio text-blue-600"
+              name="paymentMethod"
+              value="cod"
+              checked={paymentMethod === 'cod'}
+              onChange={() => setPaymentMethod('cod')}
+            />
+            <span className="ml-2 text-gray-700">Cash on Delivery</span>
+          </label>
         </div>
       </div>
+
+      {paymentMethod === 'card' && (
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl payment" id="payment">
+          <h2 className="text-xl font-semibold mb-4 text-blue-600">Card Payment Details</h2>
+          <label className="block text-sm font-medium mb-2 text-gray-700 ">Card Number</label>
+          <input
+            type="text"
+            maxLength="16"
+            className="w-full p-2 mb-4 border rounded-md text-gray-700"
+            value={cardNumber}
+            onChange={(e) => setCardNumber(e.target.value)}
+          />
+          <div className="flex space-x-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700">Exp Month</label>
+              <input
+                type="text"
+                maxLength="2"
+                className="w-full p-2 border rounded-md text-gray-700"
+                value={cardExpDate}
+                onChange={(e) => setCardExpDate(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-700">Exp Year</label>
+              <input
+                type="text"
+                maxLength="2"
+                className="w-full p-2 border rounded-md text-gray-700"
+                value={cardExpYear}
+                onChange={(e) => setCardExpYear(e.target.value)}
+              />
+            </div>
+          </div>
+          <button
+            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 rounded-md"
+            onClick={handlePayment}
+          >
+            Pay and Order
+          </button>
+          <div className="text-center mt-4">
+            <b>Accepted Here</b>
+            <img src={card} alt="Accepted Cards" className="mt-2" />
+          </div>
+        </div>
+      )}
+
+      {paymentMethod === 'upi' && (
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl payment" id="payment">
+          <h2 className="text-xl font-semibold mb-4 text-blue-600">UPI Payment Details</h2>
+          <label className="block text-sm font-medium mb-2 text-gray-700">UPI ID</label>
+          <input
+            type="text"
+            className="w-full p-2 mb-4 border rounded-md text-gray-700"
+            value={upiId}
+            onChange={(e) => setUpiId(e.target.value)}
+          />
+          <button
+            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 rounded-md"
+            onClick={handlePayment}
+          >
+            Pay and Order
+          </button>
+        </div>
+      )}
+
+      {paymentMethod === 'cod' && (
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl payment" id="payment">
+          <h2 className="text-xl font-semibold mb-4 text-blue-600">Cash on Delivery</h2>
+          <p className="text-gray-700 mb-4">
+            You can pay for your order when it is delivered to your doorstep.
+          </p>
+          <button
+            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 rounded-md"
+            onClick={handlePayment}
+          >
+            Confirm Order
+          </button>
+        </div>
+      )}
 
       {orderSuccess && (
         <div
