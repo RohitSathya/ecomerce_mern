@@ -14,7 +14,7 @@ import four from '../images/4.0.png';
 import fourpoint5 from '../images/4.5.png';
 import five from '../images/5.0.png';
 import AdminPanel from './AdminPanel';
-import ProtectedRoute from './ProtectedRoute';  
+import ProtectedRoute from './ProtectedRoute';
 import link from './link'; // Assume this is your backend URL
 
 const ratingImages = {
