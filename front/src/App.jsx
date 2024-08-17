@@ -14,6 +14,7 @@ import four from '../images/4.0.png';
 import fourpoint5 from '../images/4.5.png';
 import five from '../images/5.0.png';
 import AdminPanel from './AdminPanel';
+import ProtectedRoute from './ProtectedRoute';  
 import link from './link'; // Assume this is your backend URL
 
 const ratingImages = {
@@ -31,15 +32,17 @@ function AppContent() {
   const [buydata, setBuydata] = useState([]);
   const [productinfo, setProductinfo] = useState({});
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [uploadedProducts, setUploadedProducts] = useState([]); // New state for uploaded products
+  const [uploadedProducts, setUploadedProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [searchText, setSearchText] = useState('');
 
   const location = useLocation();
-   useEffect(() => {
+
+  useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${link}/pro/all`); // Fetch products from your backend
+        const response = await axios.get(`${link}/pro/all`);
         const backendProducts = response.data.map(product => {
-          // Determine the correct rating image based on the rating value
           let ratingImage = null;
           if (product.rating >= 5) {
             ratingImage = five;
@@ -50,15 +53,13 @@ function AppContent() {
           } else if (product.rating >= 3.5) {
             ratingImage = threepoint5;
           }
-          // Add the ratingimg property to each product
           return {
             ...product,
-            ratingimg: ratingImage, // Assign the appropriate rating image
+            ratingimg: ratingImage,
           };
         });
-  
-        // Combine static and backend products
         setFilteredProducts([...products, ...backendProducts]);
+        setUploadedProducts(backendProducts); // Save uploaded products separately
       } catch (error) {
         console.error('Error fetching products from backend:', error);
       }
@@ -68,23 +69,12 @@ function AppContent() {
   }, []);
 
   useEffect(() => {
-    // Load the AdSense script
-    const script = document.createElement('script');
-    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3637280211559707';
-    script.async = true;
-    script.crossOrigin = 'anonymous';
-    document.body.appendChild(script);
-  }, []);
-
-  useEffect(() => {
-    const userdetail = localStorage.getItem('userdetail');
-    if (userdetail) {
-      const parse = JSON.parse(userdetail);
-      setUsername(parse.name);
-    } else {
-      setUsername('Guest');
-    }
-  });
+    const filtered = [...products, ...uploadedProducts].filter(p => 
+      (selectedCategory === 'All' || p.category === selectedCategory) &&
+      (searchText === '' || p.name.toLowerCase().includes(searchText.toLowerCase()))
+    );
+    setFilteredProducts(filtered);
+  }, [searchText, selectedCategory]);
 
   const products = [
     {
@@ -383,50 +373,49 @@ function AppContent() {
     },
   ]
 
-  // Fetch products from backend and combine them with static products
- 
-  
-  
-
   const getcount = (e) => {
     setCount(e);
   };
 
-  const getname = (searchText) => {
-    searchText = searchText.toLowerCase();
-    if (searchText !== '') {
-      const filtered = filteredProducts.filter((p) => p.name.toLowerCase().startsWith(searchText));
-      setFilteredProducts(filtered);
-    } else {
-      setFilteredProducts([...products, ...uploadedProducts]);
-    }
+  const handleSearch = (text) => {
+    setSearchText(text);
+  };
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
   };
 
   const hideNavbar = location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/admin';
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-800 via-black to-gray-800 text-white">
-      {!hideNavbar && <Navbar data={count} func={getname} username={username} />}
+      {!hideNavbar && (
+        <Navbar 
+          count={count} 
+          func={handleSearch} 
+          username={username} 
+          selectedCategory={selectedCategory} 
+          onCategoryChange={handleCategoryChange} 
+        />
+      )}
       <div className="container mx-auto px-4 py-8">
         <Routes>
           <Route
             path="/"
             element={
-              <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                  {filteredProducts.map((p) => (
-                    <Products key={p._id || p.name} data={p} func={getcount} namefunc={setUsername} pi={setProductinfo} />
-                  ))}
-                </div>
-              </>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                {filteredProducts.map((p) => (
+                  <Products key={p._id || p.name} data={p} func={getcount} namefunc={setUsername} pi={setProductinfo} />
+                ))}
+              </div>
             }
           />
-          <Route path="/cart" element={<Cart func={setBuyprice} funce={setBuydata} />} />
+         <Route path="/cart" element={<ProtectedRoute element={<Cart func={setBuyprice} funce={setBuydata} />} />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/buy" element={<BuyPage data={buyprice} func={setCount} data2={buydata} />} />
-          <Route path="/order" element={<Myoder />} />
+          <Route path="/buy" element={<ProtectedRoute element={<BuyPage data={buyprice} func={setCount} data2={buydata} />} />} />
+          <Route path="/order" element={<ProtectedRoute element={<Myoder />} />} />
           <Route path="/productinfo" element={<ProductInfo data={productinfo} />} />
         </Routes>
       </div>
