@@ -9,18 +9,19 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 export default function ProductInfo({ data }) {
   const dispatch = useDispatch();
-  const [productData, setProductData] = useState(data || JSON.parse(localStorage.getItem('productData')));
   const navigate = useNavigate();
+  const [productData, setProductData] = useState(() => {
+    return data || JSON.parse(localStorage.getItem('productData'));
+  });
 
   useEffect(() => {
-    // Save data to localStorage on mount
     if (data) {
       localStorage.setItem('productData', JSON.stringify(data));
       setProductData(data);
@@ -31,37 +32,44 @@ export default function ProductInfo({ data }) {
       }
     }
 
-    // Scroll to the top of the page when the component is mounted
     window.scrollTo(0, 0);
 
-    // Cleanup: Remove data from localStorage when navigating away
-    return navigate((location) => {
+    return () => {
       localStorage.removeItem('productData');
-    });
-  }, [data, navigate]);
+    };
+  }, [data]);
 
-  async function addToCart() {
+  const addToCart = async () => {
+    if (!productData) {
+      toast.warn("No product data available.");
+      return;
+    }
+
     const userdetail = localStorage.getItem('userdetail');
     if (!userdetail) {
       toast.warn("Please log in to add products to your cart");
       return;
     }
     const parse = JSON.parse(userdetail);
-    const response = await axios.post(`${link}/product/cart`, {
-      name: productData.name,
-      category: productData.category,
-      price: productData.price,
-      image: productData.image,
-      uid: parse._id,
-    });
-    const { message } = response.data;
-    if (message === 'f') {
-      alert('Product already added to cart');
-    } else {
-      await axios.get(`${link}/product/getcart/${parse._id}`);
-      dispatch(fastcount());
+    try {
+      const response = await axios.post(`${link}/product/cart`, {
+        name: productData.name,
+        category: productData.category,
+        price: productData.price,
+        image: productData.image,
+        uid: parse._id,
+      });
+      const { message } = response.data;
+      if (message === 'f') {
+        alert('Product already added to cart');
+      } else {
+        await axios.get(`${link}/product/getcart/${parse._id}`);
+        dispatch(fastcount());
+      }
+    } catch (error) {
+      console.error("Error adding to cart", error);
     }
-  }
+  };
 
   const settings = {
     dots: true,
@@ -135,7 +143,7 @@ export default function ProductInfo({ data }) {
           </div>
           <div className="text-xl font-semibold mb-4">About this item</div>
           <ul className="list-disc list-inside text-lg text-gray-700 mb-6">
-            {productData.ati.map((a, index) => (
+            {productData.ati && productData.ati.map((a, index) => (
               <li key={index} className="mb-2">{a}</li>
             ))}
           </ul>
