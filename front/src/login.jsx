@@ -10,12 +10,12 @@ export default function Login() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
   async function handleSubmit() {
-    if(email=='admin' && password=='1234'){
-      navigate('/admin')
-    }
-    else{
+    if (email === 'admin' && password === '1234') {
+      navigate('/admin');
+    } else {
       try {
         const response = await axios.post(link + '/product/login', { email, password });
         const { message, userdetail } = response.data;
@@ -29,9 +29,7 @@ export default function Login() {
       } catch (error) {
         alert('An error occurred. Please try again.');
       }
-
     }
-   
   }
 
   return (
@@ -61,14 +59,23 @@ export default function Login() {
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-md text-gray-700  focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-md text-gray-700  focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
+            </div>
           </div>
           <button
             onClick={handleSubmit}
