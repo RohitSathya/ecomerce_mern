@@ -16,6 +16,7 @@ export default function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordStrength, setPasswordStrength] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const navid = document.getElementById('navbar');
@@ -33,7 +34,13 @@ export default function Signup() {
   };
 
   const validatePassword = (password) => {
-    return password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password) && /[@$!%*?&#]/.test(password);
+    return (
+      password.length >= 8 &&
+      /[A-Z]/.test(password) &&
+      /[a-z]/.test(password) &&
+      /\d/.test(password) &&
+      /[@$!%*?&#]/.test(password)
+    );
   };
 
   async function handleSubmit() {
@@ -142,27 +149,27 @@ export default function Signup() {
               onChange={setPhoneNo}
               inputStyle={{
                 width: '100%',
-                paddingLeft: '40px', // Add more padding to the left
+                paddingLeft: '40px',
                 paddingRight: '10px',
                 borderRadius: '4px',
                 border: '1px solid #d1d5db',
                 marginTop: '4px',
-                color: 'black', // Ensure text is black
+                color: 'black',
               }}
               containerStyle={{ width: '100%' }}
-              buttonStyle={{ backgroundColor: 'white', borderRight: '1px solid #d1d5db' }} // Ensure country dropdown is visible
+              buttonStyle={{ backgroundColor: 'white', borderRight: '1px solid #d1d5db' }}
               dropdownStyle={{
                 backgroundColor: 'white',
                 color: 'black',
                 maxHeight: '150px',
                 overflowY: 'scroll',
               }}
-              enableLongNumbers={true} // To support long numbers without dashes
+              enableLongNumbers={true}
               isValid={(value, country) => {
                 if (country.countryCode === 'in') {
-                  return /^[6-9]\d{9}$/.test(value); // Ensure valid Indian numbers
+                  return /^[6-9]\d{9}$/.test(value);
                 }
-                return true; // For other countries, allow the default validation
+                return true;
               }}
             />
           </div>
@@ -174,7 +181,9 @@ export default function Signup() {
               type="email"
               id="email"
               placeholder="Email"
-              className={`w-full mt-1 px-4 py-2 border ${validateEmail(email) ? 'border-green-300' : 'border-red-300'} rounded-md text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
+              className={`w-full mt-1 px-4 py-2 border ${
+                validateEmail(email) ? 'border-green-300' : 'border-red-300'
+              } rounded-md text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -185,10 +194,12 @@ export default function Signup() {
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               placeholder="Password"
-              className={`w-full mt-1 px-4 py-2 border ${validatePassword(password) ? 'border-green-300' : 'border-red-300'} rounded-md text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
+              className={`w-full mt-1 px-4 py-2 border ${
+                validatePassword(password) ? 'border-green-300' : 'border-red-300'
+              } rounded-md text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -196,6 +207,17 @@ export default function Signup() {
             <div className="mt-2 flex items-center">
               <div className={`h-2 w-full rounded-full ${passwordStrengthColor()}`}></div>
               <span className="ml-2 text-sm text-gray-600">{passwordStrengthLabel()}</span>
+            </div>
+            <div className="mt-2">
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox h-4 w-4 text-indigo-600"
+                  checked={showPassword}
+                  onChange={() => setShowPassword(!showPassword)}
+                />
+                <span className="ml-2 text-gray-700">Show Password</span>
+              </label>
             </div>
             <p className="text-xs text-gray-500 mt-2">
               Password must be at least 8 characters long, and include uppercase, lowercase, number, and special character.
