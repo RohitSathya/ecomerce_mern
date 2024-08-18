@@ -12,28 +12,28 @@ import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useLocation, useNavigate } from 'react-router-dom';
 
-export default function ProductInfo() {
+export default function ProductInfo({ data }) {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  // Get the initial data from the location state or localStorage
-  const [data, setData] = useState(location.state?.data || JSON.parse(localStorage.getItem('productData')) || {});
-
-  const [ati, setAti] = useState(data?.ati || []);
+  const [ati, setati] = useState(data?.ati || []);
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to the top of the page when the component is mounted
-
-    // Save data to localStorage when the component mounts if there's data
-    if (data && Object.keys(data).length > 0) {
+    // Save data to localStorage on mount
+    if (data) {
       localStorage.setItem('productData', JSON.stringify(data));
+    } else {
+      const storedData = localStorage.getItem('productData');
+      if (storedData) {
+        data = JSON.parse(storedData);
+        setati(data?.ati || []);
+      }
     }
 
-    // Remove data from localStorage when navigating away from this page
+    // Scroll to the top of the page when the component is mounted
+    window.scrollTo(0, 0);
+
     return () => {
+      // Remove data from localStorage on unmount
       localStorage.removeItem('productData');
     };
   }, [data]);
@@ -68,11 +68,6 @@ export default function ProductInfo() {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-
-  // If there's no data, display a fallback message
-  if (!data || Object.keys(data).length === 0) {
-    return <div>No product information available.</div>;
-  }
 
   return (
     <>
