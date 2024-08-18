@@ -9,34 +9,36 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
+import { useHistory } from 'react-router-dom'; // Import useHistory for navigation
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 export default function ProductInfo({ data }) {
   const dispatch = useDispatch();
-  const [ati, setati] = useState(data?.ati || []);
+  const [productData, setProductData] = useState(data || JSON.parse(localStorage.getItem('productData')));
+  const history = useHistory();
 
   useEffect(() => {
     // Save data to localStorage on mount
     if (data) {
       localStorage.setItem('productData', JSON.stringify(data));
+      setProductData(data);
     } else {
       const storedData = localStorage.getItem('productData');
       if (storedData) {
-        data = JSON.parse(storedData);
-        setati(data?.ati || []);
+        setProductData(JSON.parse(storedData));
       }
     }
 
     // Scroll to the top of the page when the component is mounted
     window.scrollTo(0, 0);
 
-    return () => {
-      // Remove data from localStorage on unmount
+    // Cleanup: Remove data from localStorage when navigating away
+    return history.listen(() => {
       localStorage.removeItem('productData');
-    };
-  }, [data]);
+    });
+  }, [data, history]);
 
   async function addToCart() {
     const userdetail = localStorage.getItem('userdetail');
@@ -46,10 +48,10 @@ export default function ProductInfo({ data }) {
     }
     const parse = JSON.parse(userdetail);
     const response = await axios.post(`${link}/product/cart`, {
-      name: data.name,
-      category: data.category,
-      price: data.price,
-      image: data.image,
+      name: productData.name,
+      category: productData.category,
+      price: productData.price,
+      image: productData.image,
       uid: parse._id,
     });
     const { message } = response.data;
@@ -69,37 +71,41 @@ export default function ProductInfo({ data }) {
     slidesToScroll: 1,
   };
 
+  if (!productData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <ToastContainer />
       <div className="flex flex-col md:flex-row justify-center items-center md:items-start bg-white p-4 md:p-8 gap-8 md:gap-16">
         <div className="w-full md:w-1/2 flex justify-center">
           <InnerImageZoom
-            src={data.image}
-            zoomSrc={data.image}
-            alt={data.name}
+            src={productData.image}
+            zoomSrc={productData.image}
+            alt={productData.name}
             className="w-full h-auto max-h-[600px] object-contain rounded-lg shadow-md"
           />
         </div>
         <div className="w-full md:w-1/2 flex flex-col">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">{data.name}</h1>
-          <p className="text-lg md:text-xl text-gray-700 mb-6">{data.description}</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">{productData.name}</h1>
+          <p className="text-lg md:text-xl text-gray-700 mb-6">{productData.description}</p>
           <div className="flex items-center mb-4">
-            <b className="text-2xl text-yellow-500 mr-2">{data.rating}</b>
-            <img src={data.ratingimg} alt="Rating" className="h-6" />
+            <b className="text-2xl text-yellow-500 mr-2">{productData.rating}</b>
+            <img src={productData.ratingimg} alt="Rating" className="h-6" />
           </div>
           <div className="mb-4 text-gray-600 font-semibold">
-            <b>{data.pur}</b>
+            <b>{productData.pur}</b>
           </div>
           <div className="border-b border-gray-300 mb-4"></div>
           <div className="mb-4">
-            <b className="text-4xl text-red-600">{data.dis}</b>
+            <b className="text-4xl text-red-600">{productData.dis}</b>
           </div>
           <div className="mb-4">
-            <b className="text-3xl text-gray-900">{data.price}</b>
+            <b className="text-3xl text-gray-900">{productData.price}</b>
           </div>
           <div className="text-gray-500 text-sm mb-4">
-            <p className="line-through">MRP: {data.mrp}</p>
+            <p className="line-through">MRP: {productData.mrp}</p>
           </div>
           <div className="border-b border-gray-300 mb-4"></div>
           <div className="text-gray-700 font-medium text-lg mb-6">
@@ -129,7 +135,7 @@ export default function ProductInfo({ data }) {
           </div>
           <div className="text-xl font-semibold mb-4">About this item</div>
           <ul className="list-disc list-inside text-lg text-gray-700 mb-6">
-            {ati.map((a, index) => (
+            {productData.ati.map((a, index) => (
               <li key={index} className="mb-2">{a}</li>
             ))}
           </ul>
