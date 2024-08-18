@@ -1,2 +1,2 @@
-const link ='https://ecom-backend-puce.vercel.app'
+const link ='https://api.explorepricing.com'
 export default link;
