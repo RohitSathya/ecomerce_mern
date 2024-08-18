@@ -57,7 +57,24 @@ export default function Navbar({ count, func, username, selectedCategory, onCate
     }
   };
 
-  const categories = ['All', 'Mobile', 'Camera', 'Perfumes', 'Shoes'];
+  const categories = [
+    'All',
+    'Mobile',
+    'Camera',
+    'Perfumes',
+    'Shoes',
+    'Laptops',
+    'Headphones',
+    'Watches',
+    'Accessories',
+    'Home Appliances',
+    'Kitchen Appliances',
+    'Clothing',
+    'Beauty Products',
+    'Books',
+    'Toys',
+    'Sports Equipment'
+  ];
 
   return (
     <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white px-3 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg">
