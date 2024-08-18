@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
-import { useHistory } from 'react-router-dom'; // Import useHistory for navigation
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -17,7 +17,7 @@ import 'slick-carousel/slick/slick-theme.css';
 export default function ProductInfo({ data }) {
   const dispatch = useDispatch();
   const [productData, setProductData] = useState(data || JSON.parse(localStorage.getItem('productData')));
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Save data to localStorage on mount
@@ -35,10 +35,10 @@ export default function ProductInfo({ data }) {
     window.scrollTo(0, 0);
 
     // Cleanup: Remove data from localStorage when navigating away
-    return history.listen(() => {
+    return navigate((location) => {
       localStorage.removeItem('productData');
     });
-  }, [data, history]);
+  }, [data, navigate]);
 
   async function addToCart() {
     const userdetail = localStorage.getItem('userdetail');
