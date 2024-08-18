@@ -18,16 +18,16 @@ export default function ProductInfo({ data }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [productData, setProductData] = useState(() => {
-    return data || JSON.parse(localStorage.getItem('productData'));
+    return data && Object.keys(data).length > 0 ? data : JSON.parse(localStorage.getItem('productData'));
   });
 
   useEffect(() => {
-    if (data!=null || data!='' || data!=' '||data!={}) {
+    if (data && Object.keys(data).length > 0) {
       localStorage.setItem('productData', JSON.stringify(data));
       setProductData(data);
     } else {
       const storedData = localStorage.getItem('productData');
-      if (storedData) {
+      if (storedData && storedData !== '{}') {
         setProductData(JSON.parse(storedData));
       }
     }
@@ -40,7 +40,7 @@ export default function ProductInfo({ data }) {
   }, [data]);
 
   const addToCart = async () => {
-    if (!productData) {
+    if (!productData || Object.keys(productData).length === 0) {
       toast.warn("No product data available.");
       return;
     }
@@ -79,7 +79,7 @@ export default function ProductInfo({ data }) {
     slidesToScroll: 1,
   };
 
-  if (!productData) {
+  if (!productData || Object.keys(productData).length === 0) {
     return <div>Loading...</div>;
   }
 
