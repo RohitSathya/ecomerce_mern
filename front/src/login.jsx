@@ -59,23 +59,26 @@ export default function Login() {
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
             </label>
-            <div className="relative">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                id="password"
-                className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-md text-gray-700  focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? 'Hide' : 'Show'}
-              </button>
-            </div>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-md text-gray-700  focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flex items-center mt-2">
+            <input
+              type="checkbox"
+              id="showPassword"
+              className="mr-2 h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)}
+            />
+            <label htmlFor="showPassword" className="text-sm text-gray-700">
+              Show Password
+            </label>
           </div>
           <button
             onClick={handleSubmit}
