@@ -77,7 +77,7 @@ export default function DisplayOrder({ data, func }) {
         />
       </div>
       <div className="flex flex-col items-center text-center">
-        <b className="text-lg font-semibold mb-2">{data.name}</b>
+        <b className="text-lg font-semibold mb-2 text-gray-700">{data.name}</b>
         <b className="text-lg text-gray-700 mb-2">{data.price}</b>
         <b className="text-md text-gray-500 mb-4">Category: {data.category}</b>
       </div>
