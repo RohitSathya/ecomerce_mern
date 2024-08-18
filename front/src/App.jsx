@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import Navbar from './Navbar';
+import Navbar from './navbar';
 import Products from './Products';
 import Cart from './Cart';
-import Login from './Login';
-import Signup from './Signup';
+import Login from './login';
+import Signup from './signup';
 import BuyPage from './BuyPage';
 import MyOrder from './MyOrder';
 import ProductInfo from './ProductInfo';
