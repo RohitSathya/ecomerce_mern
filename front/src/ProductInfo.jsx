@@ -22,7 +22,7 @@ export default function ProductInfo({ data }) {
   });
 
   useEffect(() => {
-    if (data) {
+    if (data!=null || data=='' || data==' ') {
       localStorage.setItem('productData', JSON.stringify(data));
       setProductData(data);
     } else {
