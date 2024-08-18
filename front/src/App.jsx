@@ -7,7 +7,7 @@ import Cart from './Cart';
 import Login from './login';
 import Signup from './signup';
 import BuyPage from './BuyPage';
-import MyOrder from './MyOrder';
+import MyOrder from './Myoder';
 import ProductInfo from './ProductInfo';
 import AdminPanel from './AdminPanel';
 import ProtectedRoute from './ProtectedRoute';
