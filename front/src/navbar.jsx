@@ -13,6 +13,7 @@ import link from './link';
 export default function Navbar({ count, func, username, selectedCategory, onCategoryChange }) {
   const navigate = useNavigate();
   const [cartCount, setCartCount] = useState(count);
+  const [currentUsername, setCurrentUsername] = useState(username);
 
   const counter = useSelector((state) => state.total.count);
   const fakecounter = useSelector((state) => state.total.fakecount);
@@ -23,7 +24,8 @@ export default function Navbar({ count, func, username, selectedCategory, onCate
       const userdetail = localStorage.getItem('userdetail');
       if (userdetail) {
         const parse = JSON.parse(userdetail);
-        const response = await axios.get(`${link}/product/getcart/${parse._id}`)
+        setCurrentUsername(parse.username || username); // Set the username from userdetail
+        const response = await axios.get(`${link}/product/getcart/${parse._id}`);
         const { message } = response.data;
 
         if (message === 'f') {
@@ -31,27 +33,30 @@ export default function Navbar({ count, func, username, selectedCategory, onCate
         } else {
           setCartCount(response.data.length);
         }
+      } else {
+        setCurrentUsername('Guest');
       }
     }
     fetchCart();
-  }, [count, counter, fakecounter, fastcount]);
+  }, [count, counter, fakecounter, fastcount, username]);
 
   const handleLogout = () => {
     localStorage.removeItem('userdetail');
+    setCurrentUsername('Guest'); // Reset to Guest on logout
     navigate('/login');
   };
 
   const handleOrdersClick = () => {
-    if (username === 'Guest') {
-      alert("Please log in to view your orders")
+    if (currentUsername === 'Guest') {
+      alert("Please log in to view your orders");
     } else {
       navigate('/order');
     }
   };
 
   const handleCartClick = () => {
-    if (username === 'Guest') {
-      alert("Please log in to view your cart")
+    if (currentUsername === 'Guest') {
+      alert("Please log in to view your cart");
     } else {
       navigate('/cart');
     }
@@ -118,21 +123,21 @@ export default function Navbar({ count, func, username, selectedCategory, onCate
 
         <div className="flex items-center space-x-6 sm:space-x-8">
           <div className="hidden sm:block">
-            <span className="font-semibold text-xs sm:text-sm md:text-lg">Hello, {username}</span>
+            <span className="font-semibold text-xs sm:text-sm md:text-lg">Hello, {currentUsername}</span>
           </div>
           <div className="cursor-pointer font-semibold text-xs sm:text-sm md:text-lg" onClick={handleOrdersClick}>
             Your Orders
           </div>
           <div className="relative cursor-pointer" onClick={handleCartClick}>
             <img src={cartstore} alt="Cart" className="h-5 sm:h-6 md:h-8" />
-            {username !== 'Guest' && (
+            {currentUsername !== 'Guest' && (
               <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[8px] sm:text-[10px] md:text-xs font-bold rounded-full w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex items-center justify-center">
                 {cartCount}
               </span>
             )}
           </div>
 
-          {username === 'Guest' ? (
+          {currentUsername === 'Guest' ? (
             <div className="cursor-pointer ml-6 sm:ml-8" onClick={() => navigate('/login')}>
               Login
             </div>
