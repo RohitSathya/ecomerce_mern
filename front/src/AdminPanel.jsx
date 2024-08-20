@@ -136,7 +136,7 @@ export default function AdminPanel() {
         <div className="bg-white rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-bold mb-4 text-center text-purple-700">Admin Login</h2>
           <div className="mb-4">
-            <label className="block text-white">Username</label>
+            <label className="block text-gray-700">Username</label>
             <input
               type="text"
               value={username}
@@ -145,7 +145,7 @@ export default function AdminPanel() {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-white">Password</label>
+            <label className="block text-gray-700">Password</label>
             <input
               type="password"
               value={password}
