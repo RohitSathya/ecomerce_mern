@@ -136,7 +136,7 @@ export default function AdminPanel() {
         <div className="bg-white rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-bold mb-4 text-center text-purple-700">Admin Login</h2>
           <div className="mb-4">
-            <label className="block text-gray-700">Username</label>
+            <label className="block text-white">Username</label>
             <input
               type="text"
               value={username}
@@ -145,7 +145,7 @@ export default function AdminPanel() {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Password</label>
+            <label className="block text-white">Password</label>
             <input
               type="password"
               value={password}
@@ -169,49 +169,49 @@ export default function AdminPanel() {
       <h1 className="text-2xl font-bold mb-4">Admin Panel</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div>
-          <label className="block text-gray-700">Product Name</label>
+          <label className="block text-white">Product Name</label>
           <input
             type="text"
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
             className="w-full p-2 border rounded text-black bg-white"
           />
-          <label className="block text-gray-700">Category</label>
+          <label className="block text-white">Category</label>
           <input
             type="text"
             value={productCategory}
             onChange={(e) => setProductCategory(e.target.value)}
             className="w-full p-2 border rounded text-black bg-white"
           />
-          <label className="block text-gray-700">Price</label>
+          <label className="block text-white">Price</label>
           <input
             type="text"
             value={productPrice}
             onChange={(e) => setProductPrice(e.target.value)}
             className="w-full p-2 border rounded text-black bg-white"
           />
-          <label className="block text-gray-700">Image URL</label>
+          <label className="block text-white">Image URL</label>
           <input
             type="text"
             value={productImage}
             onChange={(e) => setProductImage(e.target.value)}
             className="w-full p-2 border rounded text-black bg-white"
           />
-          <label className="block text-gray-700">Description</label>
+          <label className="block text-white">Description</label>
           <input
             type="text"
             value={productDescription}
             onChange={(e) => setProductDescription(e.target.value)}
             className="w-full p-2 border rounded text-black bg-white"
           />
-          <label className="block text-gray-700">Brand</label>
+          <label className="block text-white">Brand</label>
           <input
             type="text"
             value={productBrand}
             onChange={(e) => setProductBrand(e.target.value)}
             className="w-full p-2 border rounded text-black bg-white"
           />
-          <label className="block text-gray-700">Rating</label>
+          <label className="block text-white">Rating</label>
           <input
             type="number"
             value={productRating}
@@ -219,35 +219,35 @@ export default function AdminPanel() {
             className="w-full p-2 border rounded text-black bg-white"
             min="0" max="5"
           />
-          <label className="block text-gray-700">Count</label>
+          <label className="block text-white">Count</label>
           <input
             type="number"
             value={productCount}
             onChange={(e) => setProductCount(e.target.value)}
             className="w-full p-2 border rounded text-black bg-white"
           />
-          <label className="block text-gray-700">MRP</label>
+          <label className="block text-white">MRP</label>
           <input
             type="text"
             value={productMRP}
             onChange={(e) => setProductMRP(e.target.value)}
             className="w-full p-2 border rounded text-black bg-white"
           />
-          <label className="block text-gray-700">Discount</label>
+          <label className="block text-white">Discount</label>
           <input
             type="text"
             value={productDiscount}
             onChange={(e) => setProductDiscount(e.target.value)}
             className="w-full p-2 border rounded text-black bg-white"
           />
-          <label className="block text-gray-700">Purchase Info</label>
+          <label className="block text-white">Purchase Info</label>
           <input
             type="text"
             value={productPurchaseInfo}
             onChange={(e) => setProductPurchaseInfo(e.target.value)}
             className="w-full p-2 border rounded text-black bg-white"
           />
-          <label className="block text-gray-700">Attributes</label>
+          <label className="block text-white">Attributes</label>
           {productAttributes.map((attribute, index) => (
             <input
               key={index}
