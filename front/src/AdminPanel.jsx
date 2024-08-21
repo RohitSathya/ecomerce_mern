@@ -301,10 +301,16 @@ export default function AdminPanel() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {products.map((product, index) => (
               <div key={index} className="border rounded p-4 shadow-lg bg-white text-black">
-               {product.images && product.images.length > 0 ? (
+  {product.images && product.images.length > 0 ? (
   <img 
     src={product.images[0]} 
     alt={`${product.name} 0`} 
+    className="w-full h-32 object-cover mb-4" 
+  />
+) : product.image ? (
+  <img 
+    src={product.image} 
+    alt={`${product.name}`} 
     className="w-full h-32 object-cover mb-4" 
   />
 ) : (
@@ -312,6 +318,7 @@ export default function AdminPanel() {
     No Image Available
   </div>
 )}
+
 
                 <h3 className="text-lg font-bold">{product.name}</h3>
                 <p>{product.price}</p>
