@@ -85,12 +85,15 @@ export default function ProductInfo({ data }) {
         <div className="flex flex-col items-center md:items-start">
           <div className="flex flex-row md:flex-col mb-4 space-x-2 md:space-x-0 md:space-y-2">
             {Array.isArray(productData.images) && productData.images.map((image, index) => (
-              <div key={index} className="w-20 h-20 md:w-24 md:h-24 overflow-hidden rounded-md cursor-pointer">
+              <div 
+                key={index} 
+                className="w-24 h-24 md:w-28 md:h-28 overflow-hidden rounded-md cursor-pointer border border-gray-200 hover:border-blue-500 transition-all duration-200"
+                onClick={() => handleImageClick(image)}
+              >
                 <img
                   src={image}
                   alt={`Thumbnail ${index + 1}`}
                   className={`object-cover w-full h-full ${mainImage === image ? 'border-blue-500' : 'border-transparent'}`}
-                  onClick={() => handleImageClick(image)}
                 />
               </div>
             ))}
@@ -101,7 +104,7 @@ export default function ProductInfo({ data }) {
               zoomSrc={mainImage}
               alt={productData.name}
               className="object-contain w-full h-auto"
-              style={{ maxHeight: '600px', maxWidth: '100%' }}
+              style={{ maxHeight: '500px', maxWidth: '100%' }}
             />
           </div>
         </div>
