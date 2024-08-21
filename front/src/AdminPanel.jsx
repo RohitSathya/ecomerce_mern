@@ -44,6 +44,11 @@ export default function AdminPanel() {
       alert('Incorrect username or password');
     }
   };
+   const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
 
   const handleAddProduct = async () => {
     const newProduct = {
