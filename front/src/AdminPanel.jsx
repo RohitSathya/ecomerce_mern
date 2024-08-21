@@ -6,7 +6,7 @@ export default function AdminPanel() {
   const [productName, setProductName] = useState('');
   const [productCategory, setProductCategory] = useState('');
   const [productPrice, setProductPrice] = useState('');
-  const [productImage, setProductImage] = useState('');
+  const [productImages, setProductImages] = useState(['']);
   const [productDescription, setProductDescription] = useState('');
   const [productBrand, setProductBrand] = useState('');
   const [productRating, setProductRating] = useState(0);
@@ -50,7 +50,7 @@ export default function AdminPanel() {
       name: productName,
       category: productCategory,
       price: productPrice,
-      image: productImage,
+      images: productImages.filter(image => image.trim() !== ''), // Filtering out empty image URLs
       description: productDescription,
       brand: productBrand,
       rating: productRating,
@@ -82,7 +82,7 @@ export default function AdminPanel() {
     setProductName(product.name);
     setProductCategory(product.category);
     setProductPrice(product.price);
-    setProductImage(product.image);
+    setProductImages(product.images || ['']); // Handle undefined images
     setProductDescription(product.description);
     setProductBrand(product.brand);
     setProductRating(product.rating);
@@ -107,7 +107,7 @@ export default function AdminPanel() {
     setProductName('');
     setProductCategory('');
     setProductPrice('');
-    setProductImage('');
+    setProductImages(['']);
     setProductDescription('');
     setProductBrand('');
     setProductRating(0);
@@ -118,6 +118,16 @@ export default function AdminPanel() {
     setProductIngredients('');
     setProductAttributes(['']);
     setEditProductId(null);
+  };
+
+  const handleImageChange = (index, value) => {
+    const newImages = [...productImages];
+    newImages[index] = value;
+    setProductImages(newImages);
+  };
+
+  const handleAddImage = () => {
+    setProductImages([...productImages, '']);
   };
 
   const handleAttributeChange = (index, value) => {
@@ -190,13 +200,23 @@ export default function AdminPanel() {
             onChange={(e) => setProductPrice(e.target.value)}
             className="w-full p-2 border rounded text-black bg-white"
           />
-          <label className="block text-white">Image URL</label>
-          <input
-            type="text"
-            value={productImage}
-            onChange={(e) => setProductImage(e.target.value)}
-            className="w-full p-2 border rounded text-black bg-white"
-          />
+          <label className="block text-white">Image URLs</label>
+          {productImages.map((image, index) => (
+            <input
+              key={index}
+              type="text"
+              value={image}
+              onChange={(e) => handleImageChange(index, e.target.value)}
+              className="w-full p-2 mb-2 border rounded text-black bg-white"
+              placeholder="Add an image URL"
+            />
+          ))}
+          <button
+            className="mt-2 bg-green-500 text-white p-2 rounded"
+            onClick={handleAddImage}
+          >
+            Add Another Image URL
+          </button>
           <label className="block text-white">Description</label>
           <input
             type="text"
@@ -276,7 +296,15 @@ export default function AdminPanel() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {products.map((product, index) => (
               <div key={index} className="border rounded p-4 shadow-lg bg-white text-black">
-                <img src={product.image} alt={product.name} className="w-full h-32 object-cover mb-4" />
+                {product.images && product.images.length > 0 ? (
+                  product.images.map((image, i) => (
+                    <img key={i} src={image} alt={`${product.name} ${i}`} className="w-full h-32 object-cover mb-4" />
+                  ))
+                ) : (
+                  <div className="w-full h-32 flex items-center justify-center bg-gray-200 text-gray-500">
+                    No Image Available
+                  </div>
+                )}
                 <h3 className="text-lg font-bold">{product.name}</h3>
                 <p>{product.price}</p>
                 <p>{product.category}</p>
