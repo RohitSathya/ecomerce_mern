@@ -44,7 +44,8 @@ export default function AdminPanel() {
       alert('Incorrect username or password');
     }
   };
-   const handleKeyPress = (e) => {
+
+  const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleLogin();
     }
@@ -156,6 +157,7 @@ export default function AdminPanel() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              onKeyPress={handleKeyPress} // Handle Enter key press for username
               className="w-full p-2 border rounded text-black bg-white"
             />
           </div>
@@ -165,6 +167,7 @@ export default function AdminPanel() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyPress={handleKeyPress} // Handle Enter key press for password
               className="w-full p-2 border rounded text-black bg-white"
             />
           </div>
@@ -301,25 +304,23 @@ export default function AdminPanel() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {products.map((product, index) => (
               <div key={index} className="border rounded p-4 shadow-lg bg-white text-black">
-  {product.images && product.images.length > 0 ? (
-  <img 
-    src={product.images[0]} 
-    alt={`${product.name} 0`} 
-    className="w-full h-32 object-cover mb-4" 
-  />
-) : product.image ? (
-  <img 
-    src={product.image} 
-    alt={`${product.name}`} 
-    className="w-full h-32 object-cover mb-4" 
-  />
-) : (
-  <div className="w-full h-32 flex items-center justify-center bg-gray-200 text-gray-500">
-    No Image Available
-  </div>
-)}
-
-
+                {product.images && product.images.length > 0 ? (
+                  <img 
+                    src={product.images[0]} 
+                    alt={`${product.name} 0`} 
+                    className="w-full h-32 object-cover mb-4" 
+                  />
+                ) : product.image ? (
+                  <img 
+                    src={product.image} 
+                    alt={`${product.name}`} 
+                    className="w-full h-32 object-cover mb-4" 
+                  />
+                ) : (
+                  <div className="w-full h-32 flex items-center justify-center bg-gray-200 text-gray-500">
+                    No Image Available
+                  </div>
+                )}
                 <h3 className="text-lg font-bold">{product.name}</h3>
                 <p>{product.price}</p>
                 <p>{product.category}</p>
