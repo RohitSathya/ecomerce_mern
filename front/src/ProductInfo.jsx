@@ -9,26 +9,25 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
-import { useNavigate } from 'react-router-dom';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 export default function ProductInfo({ data }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [productData, setProductData] = useState(() => {
     return data && Object.keys(data).length > 0 ? data : JSON.parse(localStorage.getItem('productData'));
   });
+  const [mainImage, setMainImage] = useState('');
 
   useEffect(() => {
     if (data && Object.keys(data).length > 0) {
       localStorage.setItem('productData', JSON.stringify(data));
       setProductData(data);
+      setMainImage(Array.isArray(data.images) && data.images.length > 0 ? data.images[0] : data.image);
     } else {
       const storedData = localStorage.getItem('productData');
       if (storedData && storedData !== '{}') {
-        setProductData(JSON.parse(storedData));
+        const parsedData = JSON.parse(storedData);
+        setProductData(parsedData);
+        setMainImage(Array.isArray(parsedData.images) && parsedData.images.length > 0 ? parsedData.images[0] : parsedData.image);
       }
     }
 
@@ -38,6 +37,10 @@ export default function ProductInfo({ data }) {
       localStorage.removeItem('productData');
     };
   }, [data]);
+
+  const handleImageClick = (image) => {
+    setMainImage(image);
+  };
 
   const addToCart = async () => {
     if (!productData || Object.keys(productData).length === 0) {
@@ -56,12 +59,12 @@ export default function ProductInfo({ data }) {
         name: productData.name,
         category: productData.category,
         price: productData.price,
-        image: productData.image,
+        image: mainImage,
         uid: parse._id,
       });
       const { message } = response.data;
       if (message === 'f') {
-        alert('Product already added to cart');
+        toast.warn('Product already added to cart');
       } else {
         await axios.get(`${link}/product/getcart/${parse._id}`);
         dispatch(fastcount());
@@ -71,14 +74,6 @@ export default function ProductInfo({ data }) {
     }
   };
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
   if (!productData || Object.keys(productData).length === 0) {
     return <div>Loading...</div>;
   }
@@ -86,14 +81,29 @@ export default function ProductInfo({ data }) {
   return (
     <>
       <ToastContainer />
-      <div className="flex flex-col md:flex-row justify-center items-center md:items-start bg-white p-4 md:p-8 gap-8 md:gap-16">
-        <div className="w-full md:w-1/2 flex justify-center">
-          <InnerImageZoom
-            src={productData.image}
-            zoomSrc={productData.image}
-            alt={productData.name}
-            className="w-full h-auto max-h-[600px] object-contain rounded-lg shadow-md"
-          />
+      <div className="flex flex-col md:flex-row justify-center items-start bg-white p-4 md:p-8 gap-8 md:gap-16">
+        <div className="flex flex-col items-center md:items-start">
+          <div className="flex flex-row md:flex-col mb-4 space-x-2 md:space-x-0 md:space-y-2">
+            {Array.isArray(productData.images) && productData.images.map((image, index) => (
+              <div key={index} className="w-20 h-20 md:w-24 md:h-24 overflow-hidden rounded-md cursor-pointer">
+                <img
+                  src={image}
+                  alt={`Thumbnail ${index + 1}`}
+                  className={`object-cover w-full h-full ${mainImage === image ? 'border-blue-500' : 'border-transparent'}`}
+                  onClick={() => handleImageClick(image)}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="w-full flex justify-center items-center overflow-hidden bg-white">
+            <InnerImageZoom
+              src={mainImage}
+              zoomSrc={mainImage}
+              alt={productData.name}
+              className="object-contain w-full h-auto"
+              style={{ maxHeight: '600px', maxWidth: '100%' }}
+            />
+          </div>
         </div>
         <div className="w-full md:w-1/2 flex flex-col">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">{productData.name}</h1>
@@ -126,19 +136,19 @@ export default function ProductInfo({ data }) {
             </div>
             <div>
               <FaShippingFast size={40} className="mx-auto text-orange-500" />
-              <p className="mt-2 text-sm text-gray-700">free delivery</p>
+              <p className="mt-2 text-sm text-gray-700">Free delivery</p>
             </div>
             <div>
               <FaRegCheckCircle size={40} className="mx-auto text-orange-500" />
-              <p className="mt-2 text-sm text-gray-700">warranty policy</p>
+              <p className="mt-2 text-sm text-gray-700">Warranty policy</p>
             </div>
             <div>
               <FaRegCreditCard size={40} className="mx-auto text-orange-500" />
-              <p className="mt-2 text-sm text-gray-700">pay on delivery</p>
+              <p className="mt-2 text-sm text-gray-700">Pay on delivery</p>
             </div>
             <div>
               <FaStar size={40} className="mx-auto text-orange-500" />
-              <p className="mt-2 text-sm text-gray-700">top brand</p>
+              <p className="mt-2 text-sm text-gray-700">Top brand</p>
             </div>
           </div>
           <div className="text-xl font-semibold mb-4">About this item</div>
