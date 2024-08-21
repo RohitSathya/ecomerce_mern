@@ -98,13 +98,13 @@ export default function ProductInfo({ data }) {
               </div>
             ))}
           </div>
-          <div className="w-full flex justify-center items-center overflow-hidden bg-white">
+          <div className="w-full max-w-[400px] max-h-[400px] flex justify-center items-center overflow-hidden bg-white">
             <InnerImageZoom
               src={mainImage}
               zoomSrc={mainImage}
               alt={productData.name}
               className="object-contain w-full h-auto"
-              style={{ maxHeight: '500px', maxWidth: '100%' }}
+              style={{ maxHeight: '100%', maxWidth: '100%' }}
             />
           </div>
         </div>
