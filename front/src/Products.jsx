@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { fastcount } from './Redux/totalslice';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -39,7 +39,7 @@ function Products({ data, func, namefunc, pi }) {
           name: data.name,
           category: data.category,
           price: data.price,
-          image: data.image,
+          image: Array.isArray(data.images) && data.images.length > 0 ? data.images[0] : data.image, // Use the first image from the array or fallback to data.image
           uid: parse._id,
         }
       );
@@ -65,7 +65,7 @@ function Products({ data, func, namefunc, pi }) {
     >
       <div className="relative cursor-pointer" onClick={imgclick}>
         <img
-          src={data.image}
+          src={Array.isArray(data.images) && data.images.length > 0 ? data.images[0] : data.image} // Use the first image from the array or fallback to data.image
           alt={data.name}
           className="w-full h-48 object-cover transition-transform duration-300 ease-in-out"
         />
