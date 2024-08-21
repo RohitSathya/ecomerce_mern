@@ -308,16 +308,16 @@ export default function AdminPanel() {
                   <img 
                     src={product.images[0]} 
                     alt={`${product.name} 0`} 
-                    className="w-full h-32 object-cover mb-4" 
+                    className="w-full h-auto max-h-32 object-cover mb-4 rounded-lg" 
                   />
                 ) : product.image ? (
                   <img 
                     src={product.image} 
                     alt={`${product.name}`} 
-                    className="w-full h-32 object-cover mb-4" 
+                    className="w-full h-auto max-h-32 object-cover mb-4 rounded-lg" 
                   />
                 ) : (
-                  <div className="w-full h-32 flex items-center justify-center bg-gray-200 text-gray-500">
+                  <div className="w-full h-32 flex items-center justify-center bg-gray-200 text-gray-500 rounded-lg">
                     No Image Available
                   </div>
                 )}
