@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
+import ReactStars from 'react-rating-stars-component'; // Import the rating stars component
 
 export default function ProductInfo({ data }) {
   const dispatch = useDispatch();
@@ -113,7 +114,15 @@ export default function ProductInfo({ data }) {
           <p className="text-lg md:text-xl text-gray-700 mb-6">{productData.description}</p>
           <div className="flex items-center mb-4">
             <b className="text-2xl text-yellow-500 mr-2">{productData.rating}</b>
-            <img src={productData.ratingimg} alt="Rating" className="h-6" />
+            <ReactStars
+              count={5}
+              value={productData.rating}
+              size={24}
+              edit={false}  // Makes the stars read-only
+              activeColor="#ffd700"  // Star color
+              isHalf={true}  // Enables half-star display
+            />
+            <span>({productData.rating.count} reviews)</span> {/* Display the review count */}
           </div>
           <div className="mb-4 text-gray-600 font-semibold">
             <b>{productData.pur}</b>
