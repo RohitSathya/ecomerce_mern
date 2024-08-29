@@ -52,6 +52,15 @@ export default function AdminPanel() {
   };
 
   const handleAddProduct = async () => {
+    // Validation: Check if all required fields are filled
+    if (!productName || !productCategory || !productPrice || !productImages[0] || 
+        !productDescription || !productBrand || productRating === '' || 
+        productCount === '' || !productMRP || !productDiscount || !productPurchaseInfo || 
+        !productIngredients || !productAttributes[0]) {
+      alert('Please fill in all the fields before submitting.');
+      return;
+    }
+
     const newProduct = {
       name: productName,
       category: productCategory,
