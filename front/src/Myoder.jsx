@@ -11,9 +11,17 @@ export default function MyOrder() {
   useEffect(() => {
     const userdetail = localStorage.getItem('userdetail');
     const parse = JSON.parse(userdetail);
+    let userId;
+    if (parse.uid) {
+      // Google sign-in
+      userId = parse.uid;
+    } else if (parse._id) {
+      // Normal sign-in
+      userId = parse._id;
+    }
 
     async function getOrder() {
-      const response = await axios.get(`${link}/product/getorder/${parse._id}`);
+      const response = await axios.get(`${link}/product/getorder/${userId}`);
       const { message } = response.data;
       if (message === 'f') {
         setRes('f');

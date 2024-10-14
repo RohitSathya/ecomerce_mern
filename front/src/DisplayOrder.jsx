@@ -28,7 +28,15 @@ export default function DisplayOrder({ data, func }) {
   async function cancel() {
     const userdetail = localStorage.getItem('userdetail');
     const parse = JSON.parse(userdetail);
-    const response = await axios.delete(`${link}/product/deleteorder/${parse._id}/${data._id}`);
+    let userId;
+    if (parse.uid) {
+      // Google sign-in
+      userId = parse.uid;
+    } else if (parse._id) {
+      // Normal sign-in
+      userId = parse._id;
+    }
+    const response = await axios.delete(`${link}/product/deleteorder/${userId}/${data._id}`);
     const { message } = response.data;
     if (message === 's') {
       dispatch(fastcount());

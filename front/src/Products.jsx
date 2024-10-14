@@ -13,7 +13,8 @@ function Products({ data, func, namefunc, pi }) {
     const userdetail = localStorage.getItem('userdetail');
     if (userdetail) {
       const parse = JSON.parse(userdetail);
-      const names = parse.name;
+      // Check if user is signed in with Google or normally, and use the correct property for name
+      const names = parse.displayName || parse.name;
       namefunc(names);
     }
   }, [namefunc]);
@@ -31,6 +32,14 @@ function Products({ data, func, namefunc, pi }) {
     }
 
     const parse = JSON.parse(userdetail);
+    let userId;
+
+    // Determine whether the user signed in via Google (uid) or normal sign-in (_id)
+    if (parse.uid) {
+      userId = parse.uid;  // Google sign-in
+    } else if (parse._id) {
+      userId = parse._id;  // Normal sign-in
+    }
 
     try {
       const response = await axios.post(
@@ -39,20 +48,18 @@ function Products({ data, func, namefunc, pi }) {
           name: data.name,
           category: data.category,
           price: data.price,
-          image: Array.isArray(data.images) && data.images.length > 0 ? data.images[0] : data.image, // Use the first image from the array or fallback to data.image
-          uid: parse._id,
+          image: Array.isArray(data.images) && data.images.length > 0 ? data.images[0] : data.image,
+          uid: userId,  // Use correct user ID
         }
       );
 
       const { message } = response.data;
       if (message === 'f') {
-        toast.warn("Product Already Added to Cart");
+        alert("Product Already Added to Cart");
       } else {
-        const count = await axios.get(
-          `${link}/product/getcart/${parse._id}`
-        );
+        const count = await axios.get(`${link}/product/getcart/${userId}`);
         dispatch(fastcount());
-        func(count.data.length);
+        func(count.data.length);  // Update the cart count correctly
       }
     } catch (error) {
       console.error(error);
@@ -65,7 +72,7 @@ function Products({ data, func, namefunc, pi }) {
     >
       <div className="relative cursor-pointer" onClick={imgclick}>
         <img
-          src={Array.isArray(data.images) && data.images.length > 0 ? data.images[0] : data.image} // Use the first image from the array or fallback to data.image
+          src={Array.isArray(data.images) && data.images.length > 0 ? data.images[0] : data.image}
           alt={data.name}
           className="w-full h-48 object-cover transition-transform duration-300 ease-in-out"
         />

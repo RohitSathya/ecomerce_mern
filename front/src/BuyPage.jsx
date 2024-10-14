@@ -7,6 +7,8 @@ import close from '../images/close.png';
 import tick from '../images/tick.png';
 import card from '../images/cards.png';
 import link from './link';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function BuyPage({ data, data2, func }) {
   const [ord, setOrd] = useState(data2);
@@ -26,7 +28,7 @@ export default function BuyPage({ data, data2, func }) {
   const [cardExpYear, setCardExpYear] = useState('');
   const [upiId, setUpiId] = useState('');
   const [orderSuccess, setOrderSuccess] = useState(false); // State to manage success message visibility
-  const [paymentMethod, setPaymentMethod] = useState('card'); // Payment method state
+  const [paymentMethod, setPaymentMethod] = useState(''); // Empty state for initial
 
   const nav = useNavigate();
   const dispatch = useDispatch();
@@ -34,8 +36,16 @@ export default function BuyPage({ data, data2, func }) {
   useEffect(() => {
     const fetchAddress = async () => {
       const userdetail = localStorage.getItem('userdetail');
-      const parse = JSON.parse(userdetail);
-      const response = await axios.get(`${link}/product/getaddress/${parse._id}`);
+      const parsedUserDetail = JSON.parse(userdetail);
+
+      let userId;
+      if (parsedUserDetail.uid) {
+        userId = parsedUserDetail.uid;
+      } else if (parsedUserDetail._id) {
+        userId = parsedUserDetail._id;
+      }
+
+      const response = await axios.get(`${link}/product/getaddress/${userId}`);
       const { message, addressofuid } = response.data;
 
       if (message === 's' && addressofuid) {
@@ -57,7 +67,14 @@ export default function BuyPage({ data, data2, func }) {
 
   const handleSaveAddress = async () => {
     const userdetail = localStorage.getItem('userdetail');
-    const parse = JSON.parse(userdetail);
+    const parsedUserDetail = JSON.parse(userdetail);
+
+    let userId;
+    if (parsedUserDetail.uid) {
+      userId = parsedUserDetail.uid;
+    } else if (parsedUserDetail._id) {
+      userId = parsedUserDetail._id;
+    }
 
     if (isNewUser) {
       await axios.post(link + '/product/address', {
@@ -67,10 +84,10 @@ export default function BuyPage({ data, data2, func }) {
         pincode,
         area,
         landmark,
-        uid: parse._id
+        uid: userId,
       });
     } else {
-      await axios.put(`${link}/product/updateaddress/${parse._id}/${name}/${pno}/${landmark}/${pincode}/${area}`);
+      await axios.put(`${link}/product/updateaddress/${userId}/${name}/${pno}/${landmark}/${pincode}/${area}`);
     }
     setFl(fl + 1);
     setShowAddressForm(false);
@@ -85,19 +102,23 @@ export default function BuyPage({ data, data2, func }) {
   };
 
   const handlePayment = () => {
+    if (!savedAdd) {
+      toast.warn('Please add a valid shipping address before proceeding to payment.');
+      return;
+    }
+
     if (paymentMethod === 'card') {
       if (/^[0-9]{16}$/.test(cardNumber) && /^[0-9]{2}$/.test(cardExpDate) && cardExpDate >= 1 && cardExpDate <= 12 &&
         /^[0-9]{2}$/.test(cardExpYear) && cardExpYear >= 24 && cardExpYear <= 50) {
-
         processOrder();
       } else {
-        alert('Invalid card details!');
+        toast.warn('Invalid card details!');
       }
     } else if (paymentMethod === 'upi') {
       if (/^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/.test(upiId)) {
         processOrder();
       } else {
-        alert('Invalid UPI ID!');
+        toast.warn('Invalid UPI ID!');
       }
     } else if (paymentMethod === 'cod') {
       processOrder();
@@ -106,11 +127,19 @@ export default function BuyPage({ data, data2, func }) {
 
   const processOrder = async () => {
     const userdetail = localStorage.getItem('userdetail');
-    const parse = JSON.parse(userdetail);
+    const parsedUserDetail = JSON.parse(userdetail);
 
-    await axios.delete(`${link}/product/dcart/${parse._id}`);
+    let userId;
+    if (parsedUserDetail.uid) {
+      userId = parsedUserDetail.uid;
+    } else if (parsedUserDetail._id) {
+      userId = parsedUserDetail._id;
+    }
+
+    await axios.delete(`${link}/product/dcart/${userId}`);
     dispatch(fastcount());
     dispatch(postorder(ord));
+
     const mm = await axios.post(`${link}/product/order`, { ord });
     const { m } = mm.data;
 
@@ -125,6 +154,7 @@ export default function BuyPage({ data, data2, func }) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+      <ToastContainer />
       <h2 className="text-red-900 text-lg mb-4">Order Total: {parsetot}</h2>
 
       {showAddressForm ? (
@@ -221,6 +251,7 @@ export default function BuyPage({ data, data2, func }) {
               value="card"
               checked={paymentMethod === 'card'}
               onChange={() => setPaymentMethod('card')}
+              disabled={!savedAdd}  // Disable if no address
             />
             <span className="ml-2 text-gray-700">Card Payment</span>
           </label>
@@ -234,6 +265,7 @@ export default function BuyPage({ data, data2, func }) {
               value="upi"
               checked={paymentMethod === 'upi'}
               onChange={() => setPaymentMethod('upi')}
+              disabled={!savedAdd}  // Disable if no address
             />
             <span className="ml-2 text-gray-700">UPI Payment</span>
           </label>
@@ -247,13 +279,14 @@ export default function BuyPage({ data, data2, func }) {
               value="cod"
               checked={paymentMethod === 'cod'}
               onChange={() => setPaymentMethod('cod')}
+              disabled={!savedAdd}  // Disable if no address
             />
             <span className="ml-2 text-gray-700">Cash on Delivery</span>
           </label>
         </div>
       </div>
 
-      {paymentMethod === 'card' && (
+      {paymentMethod === 'card' && savedAdd && (
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl payment" id="payment">
           <h2 className="text-xl font-semibold mb-4 text-blue-600">Card Payment Details</h2>
           <label className="block text-sm font-medium mb-2 text-gray-700 ">Card Number</label>
@@ -299,7 +332,7 @@ export default function BuyPage({ data, data2, func }) {
         </div>
       )}
 
-      {paymentMethod === 'upi' && (
+      {paymentMethod === 'upi' && savedAdd && (
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl payment" id="payment">
           <h2 className="text-xl font-semibold mb-4 text-blue-600">UPI Payment Details</h2>
           <label className="block text-sm font-medium mb-2 text-gray-700">UPI ID</label>
@@ -318,7 +351,7 @@ export default function BuyPage({ data, data2, func }) {
         </div>
       )}
 
-      {paymentMethod === 'cod' && (
+      {paymentMethod === 'cod' && savedAdd && (
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl payment" id="payment">
           <h2 className="text-xl font-semibold mb-4 text-blue-600">Cash on Delivery</h2>
           <p className="text-gray-700 mb-4">

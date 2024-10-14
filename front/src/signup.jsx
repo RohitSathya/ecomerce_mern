@@ -7,6 +7,7 @@ import link from './link';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import zxcvbn from 'zxcvbn';
+import { signInWithGoogle } from './firebase'; // Import the Google sign-in method
 
 export default function Signup() {
   const dispatch = useDispatch();
@@ -44,10 +45,7 @@ export default function Signup() {
   };
 
   async function handleSubmit() {
-    if (!validateEmail(email)) {
-      alert('Please enter a valid email address.');
-      return;
-    }
+   
 
     if (!validatePassword(password)) {
       alert('Password must be at least 8 characters long, and include uppercase, lowercase, number, and special character.');
@@ -73,6 +71,17 @@ export default function Signup() {
       }
     } catch (error) {
       alert('An error occurred. Please try again.');
+    }
+  }
+
+  async function handleGoogleSignUp() {
+    try {
+      const user = await signInWithGoogle();
+      localStorage.setItem('userdetail', JSON.stringify(user));
+      dispatch(fastcount());
+      navigate('/');
+    } catch (error) {
+      alert('Google sign-up failed. Please try again.');
     }
   }
 
@@ -175,12 +184,12 @@ export default function Signup() {
           </div>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
+              UserName
             </label>
             <input
               type="email"
               id="email"
-              placeholder="Email"
+              placeholder="username"
               className={`w-full mt-1 px-4 py-2 border ${
                 validateEmail(email) ? 'border-green-300' : 'border-red-300'
               } rounded-md text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
@@ -229,6 +238,17 @@ export default function Signup() {
           >
             Create Account
           </button>
+
+          {/* Continue with Google button */}
+          <div className="mt-6">
+            <button
+              onClick={handleGoogleSignUp}
+              className="w-full py-3 bg-white border border-gray-300 text-gray-700 font-semibold rounded-md shadow-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-150 ease-in-out"
+            >
+              <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" className="inline h-6 mr-3" />
+              Sign up with Google
+            </button>
+          </div>
         </div>
         <div className="mt-6 text-center">
           <p className="text-gray-600">Already have an account?</p>

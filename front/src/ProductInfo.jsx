@@ -55,19 +55,28 @@ export default function ProductInfo({ data }) {
       return;
     }
     const parse = JSON.parse(userdetail);
+    let userId;
+  // Determine whether the user signed in via Google (uid) or normal sign-in (_id)
+  if (parse.uid) {
+    // Google sign-in
+    userId = parse.uid;
+  } else if (parse._id) {
+    // Normal sign-in
+    userId = parse._id;
+  }
     try {
       const response = await axios.post(`${link}/product/cart`, {
         name: productData.name,
         category: productData.category,
         price: productData.price,
         image: mainImage,
-        uid: parse._id,
+        uid: userId,
       });
       const { message } = response.data;
       if (message === 'f') {
         toast.warn('Product already added to cart');
       } else {
-        await axios.get(`${link}/product/getcart/${parse._id}`);
+        await axios.get(`${link}/product/getcart/${userId}`);
         dispatch(fastcount());
       }
     } catch (error) {

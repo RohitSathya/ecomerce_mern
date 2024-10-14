@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
 import link from './link'; // Adjust this to your server URL
 
 export default function AdminPanel() {
+  const navigate=useNavigate()
   const [productName, setProductName] = useState('');
   const [productCategory, setProductCategory] = useState('');
   const [productPrice, setProductPrice] = useState('');
@@ -52,20 +54,32 @@ export default function AdminPanel() {
   };
 
   const handleAddProduct = async () => {
-    // Validation: Check if all required fields are filled
-    if (!productName || !productCategory || !productPrice || !productImages[0] || 
-        !productDescription || !productBrand || productRating === '' || 
-        productCount === '' || !productMRP || !productDiscount || !productPurchaseInfo || 
-        !productIngredients || !productAttributes[0]) {
-      alert('Please fill in all the fields before submitting.');
+    let missingFields = [];
+  
+    if (!productName) missingFields.push('Product Name');
+    if (!productCategory) missingFields.push('Category');
+    if (!productPrice) missingFields.push('Price');
+    // if (!productImages[0]) missingFields.push('At least one Image URL');
+    if (!productDescription) missingFields.push('Description');
+    if (!productBrand) missingFields.push('Brand');
+    if (productRating === '') missingFields.push('Rating');
+    if (productCount === '') missingFields.push('Count');
+    if (!productMRP) missingFields.push('MRP');
+    if (!productDiscount) missingFields.push('Discount');
+    if (!productPurchaseInfo) missingFields.push('Purchase Info');
+    // if (!productIngredients) missingFields.push('Ingredients');
+    if (!productAttributes[0]) missingFields.push('At least one Attribute');
+  
+    if (missingFields.length > 0) {
+      alert(`Please fill in the following fields: \n${missingFields.join(', ')}`);
       return;
     }
-
+  
     const newProduct = {
       name: productName,
       category: productCategory,
       price: productPrice,
-      images: productImages.filter(image => image.trim() !== ''), // Filtering out empty image URLs
+      images: productImages.filter(image => image.trim() !== ''), // Filter out empty image URLs
       description: productDescription,
       brand: productBrand,
       rating: productRating,
@@ -73,10 +87,10 @@ export default function AdminPanel() {
       mrp: productMRP,
       dis: productDiscount,
       pur: productPurchaseInfo,
-      t: productIngredients.split(',').map(item => item.trim()), // Assuming ingredients are comma separated
-      ati: productAttributes.filter(attr => attr.trim() !== ''), // Filtering out empty attributes
+      t: productIngredients.split(',').map(item => item.trim()), // Assuming ingredients are comma-separated
+      ati: productAttributes.filter(attr => attr.trim() !== ''), // Filter out empty attributes
     };
-
+  
     try {
       if (editProductId) {
         await axios.put(`${link}/pro/update/${editProductId}`, newProduct);
@@ -91,6 +105,7 @@ export default function AdminPanel() {
       console.error('Error adding/updating product:', error);
     }
   };
+  
 
   const handleEditProduct = (product) => {
     setEditProductId(product._id);
@@ -193,7 +208,22 @@ export default function AdminPanel() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">Admin Panel</h1>
+       <div className="flex justify-between items-center mb-6">
+      <h1 className="text-2xl font-bold">Admin Panel</h1>
+      {/* Red button for navigating to Admin Order Panel */}
+      <button
+        onClick={() => navigate('/adminop')}
+        className="bg-red-600 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-300"
+      >
+        Admin Order Panel
+      </button>
+      <button
+        onClick={() => navigate('/admincp')}
+        className="bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-red-700 transition duration-300"
+      >
+        Admin Chat Panel
+      </button>
+    </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div>
           <label className="block text-white">Product Name</label>

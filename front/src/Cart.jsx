@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import greentick from '../images/greentick.png';
 import link from './link';
+
 export default function Cart({ func, funce }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,8 +21,19 @@ export default function Cart({ func, funce }) {
     async function getCart() {
       try {
         const userdetail = localStorage.getItem('userdetail');
-        const parse = JSON.parse(userdetail);
-        const response = await axios.get(`${link}/product/getcart/${parse._id}`);
+        const parsedUserDetail = JSON.parse(userdetail);
+
+        let userId;
+        // Determine whether the user signed in via Google (uid) or normal sign-in (_id)
+        if (parsedUserDetail.uid) {
+          // Google sign-in
+          userId = parsedUserDetail.uid;
+        } else if (parsedUserDetail._id) {
+          // Normal sign-in
+          userId = parsedUserDetail._id;
+        }
+
+        const response = await axios.get(`${link}/product/getcart/${userId}`);
         if (response.data.length !== undefined) {
           setCart(response.data);
           setCount(response.data.length);
@@ -54,10 +66,21 @@ export default function Cart({ func, funce }) {
 
   async function deleteCart(e, index) {
     const userdetail = localStorage.getItem('userdetail');
-    const parse = JSON.parse(userdetail);
-    const deleteResponse = await axios.delete(`${link}/product/deletecart/${parse._id}/${e}`);
+    const parsedUserDetail = JSON.parse(userdetail);
+
+    let userId;
+    // Determine whether the user signed in via Google (uid) or normal sign-in (_id)
+    if (parsedUserDetail.uid) {
+      // Google sign-in
+      userId = parsedUserDetail.uid;
+    } else if (parsedUserDetail._id) {
+      // Normal sign-in
+      userId = parsedUserDetail._id;
+    }
+
+    const deleteResponse = await axios.delete(`${link}/product/deletecart/${userId}/${e}`);
     if (deleteResponse.data.message === 's') {
-      const response = await axios.get(`${link}/product/getcart/${parse._id}`);
+      const response = await axios.get(`${link}/product/getcart/${userId}`);
       setCart(response.data);
       setCount(response.data.length);
 
@@ -79,8 +102,19 @@ export default function Cart({ func, funce }) {
       alert('Your cart is empty. Cannot proceed to payment page.');
     } else {
       const userdetail = localStorage.getItem('userdetail');
-      const parse = JSON.parse(userdetail);
-      const response = await axios.get(`${link}/product/getcart/${parse._id}`);
+      const parsedUserDetail = JSON.parse(userdetail);
+
+      let userId;
+      // Determine whether the user signed in via Google (uid) or normal sign-in (_id)
+      if (parsedUserDetail.uid) {
+        // Google sign-in
+        userId = parsedUserDetail.uid;
+      } else if (parsedUserDetail._id) {
+        // Normal sign-in
+        userId = parsedUserDetail._id;
+      }
+
+      const response = await axios.get(`${link}/product/getcart/${userId}`);
       func(fl === 0 ? total : reduxtotal);
       funce(response.data);
       navigate('/buy');
