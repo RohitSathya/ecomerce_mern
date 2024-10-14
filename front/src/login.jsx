@@ -34,6 +34,8 @@ export default function Login() {
   }
 
   async function handleGoogleSignIn() {
+    console.log(import.meta.env.VITE_FIREBASE_API_KEY)
+    console.log('232323')
     try {
       const user = await signInWithGoogle();
       localStorage.setItem('userdetail', JSON.stringify(user));
