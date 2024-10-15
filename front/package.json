@@ -16,6 +16,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.7.4",
+    "dotenv": "^16.4.5",
     "firebase": "^10.14.1",
     "front": "file:",
     "react": "^18.2.0",
@@ -30,6 +31,7 @@
     "react-slick": "^0.30.2",
     "react-toastify": "^10.0.5",
     "slick-carousel": "^1.8.1",
+    "vite-plugin-env-compatible": "^2.0.1",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {

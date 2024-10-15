@@ -87,7 +87,7 @@ function Products({ data, func, namefunc, pi }) {
       <div className="p-4 flex flex-col justify-between flex-grow">
         <div className="text-center">
           <h3 className="text-lg font-bold text-white mb-2">{data.name}</h3>
-          <p className="text-yellow-200 font-semibold text-xl mb-2">{data.price}</p>
+          <p className="text-yellow-200 font-semibold text-xl mb-2">{data.price} USD</p>
           <p className="text-sm text-gray-200 mb-4">Category: {data.category}</p>
         </div>
         <div className="flex justify-center">

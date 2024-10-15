@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import link from './link'; // Adjust this to your server URL
 
 export default function AdminPanel() {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [productName, setProductName] = useState('');
   const [productCategory, setProductCategory] = useState('');
   const [productPrice, setProductPrice] = useState('');
@@ -53,13 +53,36 @@ export default function AdminPanel() {
     }
   };
 
+  // Function to calculate the discount automatically
+  const calculateDiscount = (price, mrp) => {
+    const discountPercentage = ((mrp - price) / mrp) * 100;
+    return discountPercentage.toFixed(2); // Return with 2 decimal places
+  };
+
+  // Updating productPrice and calculating discount automatically
+  const handlePriceChange = (value) => {
+    setProductPrice(value);
+    if (productMRP) {
+      const calculatedDiscount = calculateDiscount(value, productMRP);
+      setProductDiscount(calculatedDiscount);
+    }
+  };
+
+  // Updating productMRP and calculating discount automatically
+  const handleMRPChange = (value) => {
+    setProductMRP(value);
+    if (productPrice) {
+      const calculatedDiscount = calculateDiscount(productPrice, value);
+      setProductDiscount(calculatedDiscount);
+    }
+  };
+
   const handleAddProduct = async () => {
     let missingFields = [];
-  
+
     if (!productName) missingFields.push('Product Name');
     if (!productCategory) missingFields.push('Category');
     if (!productPrice) missingFields.push('Price');
-    // if (!productImages[0]) missingFields.push('At least one Image URL');
     if (!productDescription) missingFields.push('Description');
     if (!productBrand) missingFields.push('Brand');
     if (productRating === '') missingFields.push('Rating');
@@ -67,14 +90,13 @@ export default function AdminPanel() {
     if (!productMRP) missingFields.push('MRP');
     if (!productDiscount) missingFields.push('Discount');
     if (!productPurchaseInfo) missingFields.push('Purchase Info');
-    // if (!productIngredients) missingFields.push('Ingredients');
     if (!productAttributes[0]) missingFields.push('At least one Attribute');
-  
+
     if (missingFields.length > 0) {
       alert(`Please fill in the following fields: \n${missingFields.join(', ')}`);
       return;
     }
-  
+
     const newProduct = {
       name: productName,
       category: productCategory,
@@ -90,7 +112,7 @@ export default function AdminPanel() {
       t: productIngredients.split(',').map(item => item.trim()), // Assuming ingredients are comma-separated
       ati: productAttributes.filter(attr => attr.trim() !== ''), // Filter out empty attributes
     };
-  
+
     try {
       if (editProductId) {
         await axios.put(`${link}/pro/update/${editProductId}`, newProduct);
@@ -105,7 +127,6 @@ export default function AdminPanel() {
       console.error('Error adding/updating product:', error);
     }
   };
-  
 
   const handleEditProduct = (product) => {
     setEditProductId(product._id);
@@ -244,8 +265,22 @@ export default function AdminPanel() {
           <input
             type="text"
             value={productPrice}
-            onChange={(e) => setProductPrice(e.target.value)}
+            onChange={(e) => handlePriceChange(e.target.value)}
             className="w-full p-2 border rounded text-black bg-white"
+          />
+          <label className="block text-white">MRP</label>
+          <input
+            type="text"
+            value={productMRP}
+            onChange={(e) => handleMRPChange(e.target.value)}
+            className="w-full p-2 border rounded text-black bg-white"
+          />
+          <label className="block text-white">Discount</label>
+          <input
+            type="text"
+            value={productDiscount}
+            readOnly
+            className="w-full p-2 border rounded text-black bg-gray-300"
           />
           <label className="block text-white">Image URLs</label>
           {productImages.map((image, index) => (
@@ -291,20 +326,6 @@ export default function AdminPanel() {
             type="number"
             value={productCount}
             onChange={(e) => setProductCount(e.target.value)}
-            className="w-full p-2 border rounded text-black bg-white"
-          />
-          <label className="block text-white">MRP</label>
-          <input
-            type="text"
-            value={productMRP}
-            onChange={(e) => setProductMRP(e.target.value)}
-            className="w-full p-2 border rounded text-black bg-white"
-          />
-          <label className="block text-white">Discount</label>
-          <input
-            type="text"
-            value={productDiscount}
-            onChange={(e) => setProductDiscount(e.target.value)}
             className="w-full p-2 border rounded text-black bg-white"
           />
           <label className="block text-white">Purchase Info</label>

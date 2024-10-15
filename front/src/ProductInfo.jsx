@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { fastcount } from './Redux/totalslice';
-import { FaShippingFast, FaRegCheckCircle, FaRegCreditCard, FaStar } from 'react-icons/fa';
+import { FaShippingFast, FaRegCheckCircle, FaRegCreditCard, FaStar, FaTrash } from 'react-icons/fa';
 import { BiSupport } from 'react-icons/bi';
 import link from './link';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
-import ReactStars from 'react-rating-stars-component'; // Import the rating stars component
+import ReactStars from 'react-rating-stars-component';
 
 export default function ProductInfo({ data }) {
   const dispatch = useDispatch();
@@ -17,6 +17,20 @@ export default function ProductInfo({ data }) {
     return data && Object.keys(data).length > 0 ? data : JSON.parse(localStorage.getItem('productData'));
   });
   const [mainImage, setMainImage] = useState('');
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState(null);
+
+  useEffect(() => {
+    const userDetail = localStorage.getItem('userdetail');
+    if (userDetail) {
+      const parse = JSON.parse(userDetail);
+      setUserId(parse.uid || parse._id);
+      setUsername(parse.displayName || parse.name);
+    }
+    fetchComments();
+  }, []);
 
   useEffect(() => {
     if (data && Object.keys(data).length > 0) {
@@ -39,6 +53,52 @@ export default function ProductInfo({ data }) {
     };
   }, [data]);
 
+  const fetchComments = async () => {
+    try {
+      const response = await axios.get(`${link}/comments/get/${productData._id}`);
+      setComments(response.data);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    }
+  };
+
+  const handleCommentSubmit = async () => {
+    if (!newComment.trim()) {
+      toast.warn('Please enter a comment');
+      return;
+    }
+
+    const commentPayload = {
+      userId,
+      username,
+      comment: newComment,
+      productId: productData._id,
+    };
+
+    try {
+      const response = await axios.post(`${link}/comments/add`, commentPayload);
+      setComments([response.data, ...comments]);  // Append new comment to the list
+      setNewComment('');
+      toast.success('Comment added successfully');
+    } catch (error) {
+      console.error('Error adding comment:', error);
+      toast.error('Error adding comment');
+    }
+  };
+
+  const handleCommentDelete = async (commentId) => {
+    try {
+      // Include userId as a query parameter
+      const response = await axios.delete(`${link}/comments/delete/${commentId}?userId=${userId}`);
+      setComments(comments.filter(comment => comment._id !== commentId)); // Remove deleted comment from the list
+      toast.success('Comment deleted successfully');
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+      toast.error('Error deleting comment');
+    }
+  };
+  
+
   const handleImageClick = (image) => {
     setMainImage(image);
   };
@@ -56,14 +116,13 @@ export default function ProductInfo({ data }) {
     }
     const parse = JSON.parse(userdetail);
     let userId;
-  // Determine whether the user signed in via Google (uid) or normal sign-in (_id)
-  if (parse.uid) {
-    // Google sign-in
-    userId = parse.uid;
-  } else if (parse._id) {
-    // Normal sign-in
-    userId = parse._id;
-  }
+    // Determine whether the user signed in via Google (uid) or normal sign-in (_id)
+    if (parse.uid) {
+      userId = parse.uid;
+    } else if (parse._id) {
+      userId = parse._id;
+    }
+
     try {
       const response = await axios.post(`${link}/product/cart`, {
         name: productData.name,
@@ -138,13 +197,13 @@ export default function ProductInfo({ data }) {
           </div>
           <div className="border-b border-gray-300 mb-4"></div>
           <div className="mb-4">
-            <b className="text-4xl text-red-600">{productData.dis}</b>
+            <b className="text-4xl text-red-600">{productData.dis}%</b>
           </div>
           <div className="mb-4">
-            <b className="text-3xl text-gray-900">{productData.price}</b>
+            <b className="text-3xl text-gray-900">{productData.price} USD</b>
           </div>
           <div className="text-gray-500 text-sm mb-4">
-            <p className="line-through">MRP: {productData.mrp}</p>
+            <p className="line-through">MRP: {productData.mrp} USD</p>
           </div>
           <div className="border-b border-gray-300 mb-4"></div>
           <div className="text-gray-700 font-medium text-lg mb-6">
@@ -185,6 +244,58 @@ export default function ProductInfo({ data }) {
             Add to Cart
           </button>
         </div>
+      </div>
+
+      {/* Comment Section */}
+      <div className="container mx-auto p-4">
+        <h2 className="text-2xl font-semibold mb-4">Comments</h2>
+        
+        {userId ? (
+          <div className="mb-4">
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              className="w-full p-2 border rounded-md mb-2 text-black"
+              placeholder="Leave a comment..."
+            />
+            <button
+              onClick={handleCommentSubmit}
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+            >
+              Submit
+            </button>
+          </div>
+        ) : (
+          <p className="text-red-500 mb-4">Please sign in to leave a comment</p>
+        )}
+
+        {/* Display comments */}
+        {comments.length > 0 ? (
+          comments.map((comment, index) => (
+            <div
+              key={index}
+              className="mb-4 p-6 bg-gradient-to-r from-blue-100 via-indigo-100 to-purple-100 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center">
+                  <p className="font-semibold text-xl text-indigo-900 mr-2">{comment.username}</p>
+                  <span className="text-sm text-gray-500">{new Date(comment.createdAt).toLocaleString()}</span>
+                </div>
+                {comment.userId === userId && (
+                  <button
+                    onClick={() => handleCommentDelete(comment._id)}
+                    className="text-red-500 hover:text-red-700 transition duration-200"
+                  >
+                    <FaTrash />
+                  </button>
+                )}
+              </div>
+              <p className="text-base text-gray-700 leading-relaxed">{comment.comment}</p>
+            </div>
+          ))
+        ) : (
+          <p>No comments yet. Be the first to comment!</p>
+        )}
       </div>
     </>
   );
