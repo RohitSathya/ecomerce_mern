@@ -1,2 +1,2 @@
-const link ='http://192.168.0.138:8081'
+const link ='https://ecom-backend-puce.vercel.app'
 export default link;
