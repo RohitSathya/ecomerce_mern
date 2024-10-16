@@ -12,6 +12,7 @@ import ProductInfo from './ProductInfo';
 import AdminPanel from './AdminPanel';
 import ProtectedRoute from './ProtectedRoute';
 import link from './link'; // Assume this is your backend URL
+import Profile from './Profile';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -210,6 +211,7 @@ function AppContent() {
           <Route path="/buy" element={<ProtectedRoute element={<BuyPage data={buyprice} func={setCount} data2={buydata} />} />} />
           <Route path="/order" element={<ProtectedRoute element={<MyOrder />} />} />
           <Route path="/productinfo" element={<ProductInfo data={productinfo} />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </div>
